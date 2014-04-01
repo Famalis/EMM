@@ -111,8 +111,21 @@ public class ObjectClassifier {
 	private double log2(double x) {
 		return Math.log(x) / Math.log(2);
 	}
+	
+	private double entropy(double... values) {
+		double result = 0.0;
+		for (double d : values) {
+			result += d * log2(d);
+		}
+		result *= (double) -1;
+		return result;
+	}
 
-	public double infoS() {
+	/**
+	 * Informacje o klasach. Obiekt może być true albo false.
+	 * @return 
+	 */
+	public double infoT() {
 
 		double C = 0;
 		double c = 0;
@@ -123,12 +136,16 @@ public class ObjectClassifier {
 			}
 		}
 		c = S - C;
-		double result = C / S * log2(C / S)
-				- c / S * log2(c / S);
+		double result = entropy(C/S, c/S);
 		return result;
 	}
 
-	public double infoT(Integer featureId) {
+	/**
+	 * Podział na klasy.
+	 * @param featureId
+	 * @return 
+	 */
+	public double infoX(Integer featureId) {
 		double result = 0D;
 		for (String fValue : Feature.possibleFeatures.get(featureId).getPossibleValues()) {
 			double positive = 0.0;
@@ -140,6 +157,7 @@ public class ObjectClassifier {
 					negative++;
 				}
 			}
+			/*
 			double groupSize = partitionedObjects.get(fValue).size();
 			double a = groupSize/trainingSet.size();
 			double b = (positive/groupSize)*log2(positive/groupSize);
@@ -148,9 +166,47 @@ public class ObjectClassifier {
 					(-positive/groupSize*log2(positive/groupSize)
 					-negative/groupSize*log2(negative/groupSize));
 					*/
-			result += a *((-1)*b-c);
+			double groupSize = (double)partitionedObjects.get(fValue).size();
+			result += groupSize/(double)trainingSet.size() *
+					entropy(positive/groupSize,negative/groupSize);
 		}
 		return result;
+	}
+	
+	public double splitInfo(Integer featureId) {
+		double result = 0D;
+		for (String fValue : Feature.possibleFeatures.get(featureId).getPossibleValues()) {
+			double positive = 0.0;
+			double negative = 0.0;
+			for (ClassifiableObject co : partitionedObjects.get(fValue)){
+				if(co.isAcceptable()) {
+					positive++;
+				} else {
+					negative++;
+				}
+			}
+			/*
+			double groupSize = partitionedObjects.get(fValue).size();
+			double a = groupSize/trainingSet.size();
+			double b = (positive/groupSize)*log2(positive/groupSize);
+			double c = (negative/groupSize)*log2(negative/groupSize);
+			/*result += groupSize/trainingSet.size() *
+					(-positive/groupSize*log2(positive/groupSize)
+					-negative/groupSize*log2(negative/groupSize));
+					*/
+			double groupSize = (double)partitionedObjects.get(fValue).size();
+			result += -1D*groupSize/(double)trainingSet.size() *
+					entropy(groupSize/(double)trainingSet.size());
+		}
+		return result;
+	}
+	
+	public double gain(Integer featureId) {
+		return infoT() - infoX(featureId);
+	}
+	
+	public double gainRatio(Integer featureId) {
+		return gain(featureId)/splitInfo(featureId);
 	}
 	public double groupObjects() {
 		partitionedObjects = new HashMap<>();

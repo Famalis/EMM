@@ -12,6 +12,11 @@
     <body>
 		<table>
 			<tr>
+				<th style="background-color: grey" colspan="3">
+					By bread
+				</th>
+			</tr>
+			<tr>
 				<th>
 					White
 				</th>
@@ -46,6 +51,11 @@
 				</td>
 			</tr>
 			<tr>
+				<th style="background-color: grey" colspan="3">
+					By filling
+				</th>
+			</tr>
+			<tr>
 				<th>
 					Cheese
 				</th>
@@ -78,6 +88,11 @@
 						</c:forEach>
 					</div>
 				</td>
+			</tr>
+			<tr>
+				<th style="background-color: grey" colspan="3">
+					By seasoning
+				</th>
 			</tr>
 			<tr>
 				<th>

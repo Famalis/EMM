@@ -10,8 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.edu.pjwstk.emm.model.ClassifiableObject;
-import pl.edu.pjwstk.emm.model.Feature;
+import pl.edu.pjwstk.emm.model.ClassifierTree;
 import pl.edu.pjwstk.emm.utils.ObjectClassifier;
 
 /**
@@ -43,7 +42,9 @@ public class MainPageController {
 		model.addAttribute("map9", oc.getPartitionedObjects().get("honey mustard"));
 		model.addAttribute("test", "teesssstt");
 		model.addAttribute("trainingSet", oc.getTrainSet());
-		System.out.println(oc.infoS() + " " +oc.infoT(0));
+		System.out.println(oc.infoT() + " - " +oc.infoX(0)+" =\n"+oc.gain(0));
+		System.out.println(oc.gainRatio(0));
+		ClassifierTree tree = new ClassifierTree(oc);
         return "index";
     }
 }

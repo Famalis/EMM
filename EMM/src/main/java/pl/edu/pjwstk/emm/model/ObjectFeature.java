@@ -6,11 +6,13 @@
 
 package pl.edu.pjwstk.emm.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Sergio
  */
-public class ObjectFeature {
+public class ObjectFeature implements Serializable{
 	
 	private Integer featureId;
 	private String value;

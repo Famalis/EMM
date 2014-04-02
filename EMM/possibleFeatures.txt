@@ -1,0 +1,3 @@
+bread,white,dark,flat
+inside,cheese,ham,cottage cheese
+season,none,ketchup,honey mustard

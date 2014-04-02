@@ -6,13 +6,14 @@
 
 package pl.edu.pjwstk.emm.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Sergio
  */
-public class Feature {
+public class Feature implements Serializable{
 	
 	private String name;
 	private ArrayList<String> possibleValues;

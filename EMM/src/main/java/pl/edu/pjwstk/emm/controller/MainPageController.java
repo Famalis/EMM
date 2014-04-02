@@ -29,7 +29,7 @@ public class MainPageController {
     public String home(HttpSession session, ModelMap model) {
         ObjectClassifier oc = new ObjectClassifier();
 		oc.generateFeatures();
-		oc.createTrainSet();
+		oc.generateRandomTrainList(true,5);
 		oc.groupObjects();
 		model.addAttribute("map1", oc.getPartitionedObjects().get("white"));
 		model.addAttribute("map2", oc.getPartitionedObjects().get("dark"));
@@ -41,10 +41,16 @@ public class MainPageController {
 		model.addAttribute("map8", oc.getPartitionedObjects().get("ketchup"));
 		model.addAttribute("map9", oc.getPartitionedObjects().get("honey mustard"));
 		model.addAttribute("test", "teesssstt");
-		model.addAttribute("trainingSet", oc.getTrainSet());
-		System.out.println(oc.infoT() + " - " +oc.infoX(0)+" =\n"+oc.gain(0));
-		System.out.println(oc.gainRatio(0));
+		model.addAttribute("trainingSet", oc.getTrainingSet());
+		//System.out.println(oc.infoT() + " - " +oc.infoX(0)+" =\n"+oc.gain(0));
+		//System.out.println(oc.infoT());
+		System.out.println(oc.gain(0)+"/"+oc.splitInfo(0)+"="+oc.gainRatio(0));
+		//System.out.println(oc.gainRatio(0));
+		//System.out.println(oc.gainRatio(0));
 		ClassifierTree tree = new ClassifierTree(oc);
+		//String aa = tree.toString();
+		//System.out.println(tree.toString());
+		tree.printNodes();
         return "index";
     }
 }

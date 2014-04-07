@@ -13,42 +13,93 @@ import java.util.ArrayList;
  */
 public class ClassifierTreeNode {
 
-	Feature feature;
-	ClassifierTreeNode parent;
-	ArrayList<ClassifierTreeNode> children;
-	Integer level;
-	String branchLabel = "";
+    private Feature feature;
+    private ClassifierTreeNode parent;
+    private ArrayList<ClassifierTreeNode> children;
+    private Integer level;
+    private String branchLabel = "";
+    private String classValue = null;
 
-	public ClassifierTreeNode() {
-		children = new ArrayList<>();
-		level = 0;
-	}
+    public String getClassValue() {
+        return classValue;
+    }
 
-	public void addChild(ClassifierTreeNode node) {
-		if (!children.contains(node)) {
-			children.add(node);
-			node.setParent(node);
-		}
-	}
+    public void setClassValue(String classValue) {
+        this.classValue = classValue;
+    }
+    
+    public boolean isLeaf() {
+        if(children.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public Feature getFeature() {
+        return feature;
+    }
 
-	public void addChildren(ArrayList<ClassifierTreeNode> nodes) {
-		for (ClassifierTreeNode node : nodes) {
-			this.addChild(node);
-		}
-	}
+    public void setFeature(Feature feature) {
+        this.feature = feature;
+    }
 
-	public void setParent(ClassifierTreeNode node) {
-		this.parent = node;
-	}
-	
-	@Override
-	public String toString(){
-		String line = "";
-		line+="Node: "+feature.getName()+" ("+level+") [";
-		for (ClassifierTreeNode node : children) {
-			line+=node.feature.getName()+", ";
-		}
-		line+="]";
-		return line;
-	}
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public String getBranchLabel() {
+        return branchLabel;
+    }
+
+    public void setBranchLabel(String branchLabel) {
+        this.branchLabel = branchLabel;
+    }
+    
+    public ClassifierTreeNode() {
+        children = new ArrayList<>();
+        level = 0;
+    }
+
+    public void addChild(ClassifierTreeNode node) {
+        if (!children.contains(node)) {
+            children.add(node);
+            node.setParent(node);
+        }
+    }
+
+    public void addChildren(ArrayList<ClassifierTreeNode> nodes) {
+        for (ClassifierTreeNode node : nodes) {
+            this.addChild(node);
+        }
+    }
+
+    public ArrayList<ClassifierTreeNode> getChildren() {
+        return children;
+    }
+
+    public void setParent(ClassifierTreeNode node) {
+        this.parent = node;
+        if (!node.getChildren().contains(this)) {
+            node.addChild(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        String line = "";
+        if(classValue != null ){
+            return classValue;
+        }
+        line += "Node: " + feature.getName() + " (" + level + ") [";
+        for (ClassifierTreeNode node : children) {
+            line += node.feature.getName() + ", ";
+        }
+        line += "]";
+        
+        return line;
+    }
 }

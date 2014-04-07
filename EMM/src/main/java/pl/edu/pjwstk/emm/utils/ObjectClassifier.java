@@ -249,6 +249,13 @@ public class ObjectClassifier implements Serializable {
 		return result;
 	}
 
+    /**
+     * Zwraca procent "poprawności" atrybutu, czyli ile procent obiektów w cesze
+     * należy do klasy dzielącej.
+     * @param featureId
+     * @param value
+     * @return 
+     */
 	public double attributeValueChance(Integer featureId, String value) {
 		double result = 0D;
 		for (String fValue : Feature.possibleFeatures.get(featureId).getPossibleValues()) {
@@ -268,6 +275,22 @@ public class ObjectClassifier implements Serializable {
 		return result;
 	}
 
+    /**
+     * Zwraca ile procent obiektów na liście należy do klasy dzielącej.
+     * @param list
+     * @return 
+     */
+    public double subsetInClass(ArrayList<ClassifiableObject> list) {
+        double positive = 0.0;
+        //double negative = 0.0;
+        for (ClassifiableObject co : list) {
+          if(co.isAcceptable()) {
+              positive++;
+          }  
+        }
+        double listSize = (double)list.size();
+        return positive/listSize;
+    }
 	public double splitInfo(Integer featureId) {
 		double result = 0D;
 		for (String fValue : Feature.possibleFeatures.get(featureId).getPossibleValues()) {
@@ -284,12 +307,32 @@ public class ObjectClassifier implements Serializable {
 		return infoT() - infoX(featureId);
 	}
 
+    /**
+     * Zwraca id cechy z z najlepszym Gain.
+     * @return 
+     */
 	public int getBestGain() {
 		double best = 0.0;
 		int bestId = -1;
 		for (int i = 0; i < Feature.possibleFeatures.size(); i++) {
 			if (best < gain(i)) {
 				best = gain(i);
+				bestId = i;
+			}
+		}
+		return bestId;
+	}
+    
+    /**
+     * Zwraca id cechy z najlepszym GainRatio.
+     * @return 
+     */
+    public int getBestGainRatio() {
+		double best = 0.0;
+		int bestId = -1;
+		for (int i = 0; i < Feature.possibleFeatures.size(); i++) {
+			if (best < gainRatio(i)) {
+				best = gainRatio(i);
 				bestId = i;
 			}
 		}
@@ -324,11 +367,16 @@ public class ObjectClassifier implements Serializable {
 		ArrayList<ClassifiableObject> set = new ArrayList<>();
 		for (ClassifiableObject oc : trainingSet) {
 			for (String value : values) {
+                int success = 0;
 				for (ObjectFeature of : oc.getObjectFeatures()) {
 					if (of.getValue().equals(value)
 							|| value==null) {
-						set.add(oc);
+                        success++;
+                        break;
 					}
+                    if(success==Feature.possibleFeatures.size()) {
+                        set.add(oc);
+                    }
 				}
 			}
 		}

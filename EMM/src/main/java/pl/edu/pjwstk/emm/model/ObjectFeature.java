@@ -33,5 +33,16 @@ public class ObjectFeature implements Serializable{
 	public String getValue() {
 		return value;
 	}
+    
+    @Override
+    public boolean equals(Object obj) {
+        ObjectFeature of = (ObjectFeature) obj;
+        if(of.featureId.equals(this.featureId)
+                && of.value.equals(this.value)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 	
 }

@@ -23,6 +23,7 @@ public class IndexController {
 	@RequestMapping("/index")
 	public String home(ModelMap model) {
 		TeaClassifier tc = new TeaClassifier();
+		//tc.generateTrainingSetFromTxt("teaDat.txt");
 		tc.generateTrainingSet(10);
 		System.out.println("Sugar "+tc.gain(TeaClassifier.SUGAR)+" "+tc.sugarGain()[1]);
 		System.out.println("Addition "+tc.gain(TeaClassifier.ADDITION));
@@ -30,6 +31,8 @@ public class IndexController {
 		TeaTree tree = new TeaTree(tc);
 		System.out.println(tree.getRootStr());	
 		tree.print();
+		model.put("tree", tree.htmlString());
 		return "index";
 	}
+	
 }

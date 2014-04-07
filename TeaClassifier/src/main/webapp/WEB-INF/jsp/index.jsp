@@ -2,18 +2,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 	"http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
+<html ng-app>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome to Spring Web MVC project</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.5/angular.min.js"></script>
+		<script type="text/javascript" src="/TeaClassifier/resources/js/index.js"></script>
     </head>
 
-    <body>
-        <p>Hello! This is the default welcome page for a Spring Web MVC project.</p>
-        <p><i>To display a different welcome page for this project, modify</i>
-			<tt>index.jsp</tt> <i>, or create your own welcome page then change
-				the redirection in</i> <tt>redirect.jsp</tt> <i>to point to the new
-				welcome page and also update the welcome-file setting in</i>
-			<tt>web.xml</tt>.</p>
+    <body ng-controller="IndexCtrl">
+        <form action="/customData.htm">
+			<textarea name="data">
+				
+			</textarea>
+			<input type="submit" value="Rebuild tree"/>
+		</form>
+		${tree}
     </body>
 </html>

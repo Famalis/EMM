@@ -5,12 +5,16 @@
  */
 package pl.edu.pjwstk.teaclassifier.classifying;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import pl.edu.pjwstk.teaclassifier.model.Tea;
 
 /**
@@ -27,6 +31,26 @@ public class TeaClassifier {
 
 	public TeaClassifier() {
 		super();
+	}
+
+	public void generateTrainingSetFromTxt(String fileName) {
+		try {
+			File f = new File(fileName);
+			FileReader fr = new FileReader(f);
+			BufferedReader br = new BufferedReader(fr);
+			String line;
+			while((line = br.readLine())!=null) {
+				String[] data = line.split(",");
+				Tea t = new Tea();
+				t.setAddition(data[2]);
+				t.setSugar(Double.valueOf(data[1]));
+				t.setDrinkable(Boolean.valueOf(data[3]));
+				t.setTeaType(data[0]);
+				trainingSet.add(t);
+			}
+		} catch (Exception ex) {
+			Logger.getLogger(TeaClassifier.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 	public void generateTrainingSet(int num) {
@@ -278,19 +302,17 @@ public class TeaClassifier {
 	}
 
 	public ArrayList<Tea> getTeasWithValueS(String[] values) {
-		
+
 		ArrayList<Tea> teas = new ArrayList<>();
-		
+
 		for (Tea t : trainingSet) {
-			if((t.getTeaType().equals(values[0]) || values[0]==null)
-					&& (t.getAddition().equals(values[1]) || values[1]==null)) {
+			if ((t.getTeaType().equals(values[0]) || values[0] == null)
+					&& (t.getAddition().equals(values[1]) || values[1] == null)) {
 				teas.add(t);
 			}
 		}
-		
+
 		return teas;
 	}
-	
-	
-	
+
 }

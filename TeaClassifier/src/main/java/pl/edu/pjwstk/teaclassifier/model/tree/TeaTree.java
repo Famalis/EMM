@@ -6,7 +6,6 @@
 package pl.edu.pjwstk.teaclassifier.model.tree;
 
 import java.util.ArrayList;
-import static java.util.Collections.list;
 import java.util.List;
 import pl.edu.pjwstk.teaclassifier.classifying.TeaClassifier;
 import pl.edu.pjwstk.teaclassifier.model.Tea;
@@ -63,10 +62,12 @@ public class TeaTree {
 						positive++;
 					}
 				}
-
+				if (list.isEmpty()) {
+					return;
+				}
 				double percentGood = (double) positive / (double) list.size();
 				if (newUsed.size() == 3) {
-					addLeaf(list,positive,parent,val);
+					addLeaf(list, positive, parent, val);
 					return;
 				}
 
@@ -74,9 +75,9 @@ public class TeaTree {
 				child.level = level + 1;
 				child.setLabel(val);
 				if (percentGood == 1.0) {
-					child.classValue = "Good";
+					child.classValue = "Good (" + positive + ")";
 				} else if (percentGood == 0.0) {
-					child.classValue = "Bad";
+					child.classValue = "Bad (" + (list.size() - positive) + ")";
 				} else {
 					double bestGain = 0.0;
 					int bestAttr = 0;
@@ -95,12 +96,13 @@ public class TeaTree {
 				parent.getChildren().add(child);
 			}
 		} else if (parent.getAttributeNum() == 2) {
-			String[] newValueCombo = new String[2];
-			newValueCombo[0] = valueCombo[0];
-			newValueCombo[1] = valueCombo[1];
-			List<Integer> newUsed = new ArrayList<>();
-			newUsed.addAll(usedAttributes);
+
 			for (String val : Tea.ADDITION_VALUES) {
+				String[] newValueCombo = new String[2];
+				newValueCombo[0] = valueCombo[0];
+				newValueCombo[1] = valueCombo[1];
+				List<Integer> newUsed = new ArrayList<>();
+				newUsed.addAll(usedAttributes);
 				newValueCombo[1] = val;
 				newUsed.add(2);
 				ArrayList<Tea> list = tc.getTeasWithValueS(newValueCombo);
@@ -110,19 +112,22 @@ public class TeaTree {
 						positive++;
 					}
 				}
-				
-				if (newUsed.size() == 3) {
-					addLeaf(list,positive,parent,val);
+				if (list.isEmpty()) {
 					return;
 				}
-				
+
+				if (newUsed.size() == 3) {
+					addLeaf(list, positive, parent, val);
+					return;
+				}
+
 				TeaNode child = new TeaNode();
 				child.level = level + 1;
 				double percentGood = (double) positive / (double) list.size();
 				if (percentGood == 1.0) {
-					child.classValue = "Good";
+					child.classValue = "Good (" + positive + ")";
 				} else if (percentGood == 0.0) {
-					child.classValue = "Bad";
+					child.classValue = "Bad (" + (list.size() - positive) + ")";
 				} else {
 					double bestGain = 0.0;
 					int bestAttr = 0;
@@ -147,12 +152,15 @@ public class TeaTree {
 			newValueCombo[1] = valueCombo[1];
 			List<Integer> newUsed = new ArrayList<>();
 			newUsed.addAll(usedAttributes);
-
+			newUsed.add(1);
 			ArrayList<Tea> list = tc.getTeasWithValueS(newValueCombo);
 			if (list.isEmpty()) {
 				return;
 			}
-			double positive = 0.0;
+			if (list.isEmpty()) {
+				return;
+			}
+			int positive = 0;
 			for (Tea t : list) {
 				if (t.getSugar() > tc.sugarGain()[1]) {
 					positive++;
@@ -160,14 +168,14 @@ public class TeaTree {
 
 				}
 			}
-			
+
 			double dsize = (double) list.size();
 			if (positive > 0) {
 				TeaNode childPos = new TeaNode();
 				childPos.level = level + 1;
 				childPos.setLabel("<=" + tc.sugarGain()[1]);
-				if(newUsed.size()==3) {
-					
+				if (newUsed.size() == 3) {
+
 				}
 				childPos.classValue = "Good (" + positive + ")";
 				parent.getChildren().add(childPos);
@@ -224,12 +232,35 @@ public class TeaTree {
 		if (parent.classValue == null) {
 			line += parent.attribute;
 		} else {
-			line += parent.classValue;
+			line += " -> " + parent.classValue;
 		}
 		System.out.println(line);
 		for (TeaNode node : parent.children) {
 			printString(node);
 		}
+	}
+
+	public String htmlString() {
+		return nodeHtmlString(root);
+	}
+
+	private String nodeHtmlString(TeaNode parent) {
+		String line = "<br/>|";
+		for (int i = 0; i < parent.level; i++) {
+			line += "-";
+		}
+		if (!parent.label.equals("")) {
+			line += "[" + parent.label + "]";
+		}
+		if (parent.classValue == null) {
+			line += parent.attribute;
+		} else {
+			line += " -> " + parent.classValue;
+		}
+		for (TeaNode node : parent.children) {
+			line += nodeHtmlString(node);
+		}
+		return line;
 	}
 
 	class TeaNode {

@@ -247,7 +247,102 @@ public class TeaClassifier {
 		}
 		return result;
 	}
+	
+	public double teaTypeSplitInfo() {
+		double result = 0.0;
+		double blackTeaSize = 0.0;
+		double blackGood = 0.0;
+		double blackBad = 0.0;
+		double whiteTeaSize = 0.0;
+		double whitekGood = 0.0;
+		double whiteBad = 0.0;
+		double greenTeaSize = 0.0;
+		double greenGood = 0.0;
+		double greenBad = 0.0;
+		for (Tea t : trainingSet) {
+			if (t.getTeaType().equals(Tea.BLACK_TEA)) {
+				blackTeaSize++;
+				if (t.isDrinkable()) {
+					blackGood++;
+				} else {
+					blackBad++;
+				}
+			}
+			if (t.getTeaType().equals(Tea.GREEN_TEA)) {
+				whiteTeaSize++;
+				if (t.isDrinkable()) {
+					whitekGood++;
+				} else {
+					whiteBad++;
+				}
+			}
+			if (t.getTeaType().equals(Tea.WHITE_TEA)) {
+				greenTeaSize++;
+				if (t.isDrinkable()) {
+					greenGood++;
+				} else {
+					greenBad++;
+				}
+			}
+		}
+		result = (-1.0*blackTeaSize / (double)trainingSet.size()) * log2(blackTeaSize/(double)trainingSet.size());
+		result+= (-1.0*whiteTeaSize / (double)trainingSet.size()) * log2(whiteTeaSize/(double)trainingSet.size());
+		result+= (-1.0*greenTeaSize / (double)trainingSet.size()) * log2(greenTeaSize/(double)trainingSet.size());
+		return result;
+	}
+	
+	public double additionalSplitInfo() {
+		
+		double result = 0.0;
+		double milkSize = 0.0;
+		double milkGood = 0.0;
+		double milkBad = 0.0;
+		double lemonSize = 0.0;
+		double lemonGood = 0.0;
+		double lemonBad = 0.0;
+		double noneSize = 0.0;
+		double noneGood = 0.0;
+		double noneBad = 0.0;
+		for (Tea t : trainingSet) {
+			if (t.getAddition().equals(Tea.MILK)) {
+				milkSize++;
+				if (t.isDrinkable()) {
+					lemonGood++;
+				} else {
+					lemonBad++;
+				}
+			}
+			if (t.getAddition().equals(Tea.LEMON)) {
+				lemonSize++;
+				if (t.isDrinkable()) {
+					milkGood++;
+				} else {
+					milkBad++;
+				}
+			}
+			if (t.getAddition().equals(Tea.NONE)) {
+				noneSize++;
+				if (t.isDrinkable()) {
+					noneGood++;
+				} else {
+					noneBad++;
+				}
+			}
+		}
+		result = (-1.0 * milkSize / (double)trainingSet.size()) * log2(milkSize/(double)trainingSet.size());
+		result+= (-1.0 * lemonSize / (double)trainingSet.size()) * log2(lemonSize/(double)trainingSet.size());
+		result+= (-1.0 * noneSize / (double)trainingSet.size()) * log2(noneSize/(double)trainingSet.size());
+		return result;
+	}
 
+	public double gainRatio(int attr) {
+		switch(attr) {
+			case(0): return gain(attr)/teaTypeSplitInfo();
+			case(1): return gain(attr)/additionalSplitInfo();
+			default: return sugarGain()[0];
+		}
+	}
+	
 	/**
 	 * Zwraca tablicę z dwoma wartościami, w której wartość 0 to gain a 1 to
 	 * wartość decydująca.

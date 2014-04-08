@@ -5,6 +5,7 @@
  */
 package pl.edu.pjwstk.teaclassifier.model.tree;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import pl.edu.pjwstk.teaclassifier.classifying.TeaClassifier;
@@ -14,7 +15,7 @@ import pl.edu.pjwstk.teaclassifier.model.Tea;
  *
  * @author sergio
  */
-public class TeaTree {
+public class TeaTree implements Serializable{
 
 	private TeaNode root;
 
@@ -31,7 +32,7 @@ public class TeaTree {
 		int bestAttr = 0;
 		//0 - tea type, 1 - sugar, 2 - add
 		for (int i = 0; i < 3; i++) {
-			double tmpGain = tc.gain(i);
+			double tmpGain = tc.gainRatio(i);
 			if (tmpGain > bestGain) {
 				bestAttr = i;
 				bestGain = tmpGain;
@@ -83,7 +84,7 @@ public class TeaTree {
 					int bestAttr = 0;
 					//0 - tea type, 1 - sugar, 2 - add
 					for (int i = 0; i < 3; i++) {
-						double tmpGain = tc.gain(i);
+						double tmpGain = tc.gainRatio(i);
 						if (tmpGain > bestGain
 								&& !newUsed.contains(i)) {
 							bestAttr = i;
@@ -93,7 +94,7 @@ public class TeaTree {
 					child.setAttribute(bestAttr);
 					buildTree(tc, child, newValueCombo, level + 1, newUsed);
 				}
-				parent.getChildren().add(child);
+				parent.addChild(child);
 			}
 		} else if (parent.getAttributeNum() == 2) {
 
@@ -133,7 +134,7 @@ public class TeaTree {
 					int bestAttr = 0;
 					//0 - tea type, 1 - sugar, 2 - add
 					for (int i = 0; i < 3; i++) {
-						double tmpGain = tc.gain(i);
+						double tmpGain = tc.gainRatio(i);
 						if (tmpGain > bestGain
 								&& !newUsed.contains(i)) {
 							bestAttr = i;
@@ -144,7 +145,7 @@ public class TeaTree {
 					buildTree(tc, child, newValueCombo, level + 1, newUsed);
 				}
 				child.setLabel(val);
-				parent.getChildren().add(child);
+				parent.addChild(child);
 			}
 		} else if (parent.getAttributeNum() == 1) {
 			String[] newValueCombo = new String[2];
@@ -178,14 +179,14 @@ public class TeaTree {
 
 				}
 				childPos.classValue = "Good (" + positive + ")";
-				parent.getChildren().add(childPos);
+				parent.addChild(childPos);
 			}
 			if (list.size() - positive > 0) {
 				TeaNode childNeg = new TeaNode();
 				childNeg.level = level + 1;
 				childNeg.setLabel(">" + tc.sugarGain()[1]);
 				childNeg.classValue = "Bad (" + (list.size() - positive) + ")";
-				parent.getChildren().add(childNeg);
+				parent.addChild(childNeg);
 			}
 
 		}
@@ -198,14 +199,14 @@ public class TeaTree {
 			leaf.level = parent.level + 1;
 			leaf.setLabel(val);
 			leaf.classValue = "Good (" + positive + ")";
-			parent.getChildren().add(leaf);
+			parent.addChild(leaf);
 		}
 		if (list.size() - positive > 0) {
 			TeaNode leaf = new TeaNode();
 			leaf.level = parent.level + 1;
 			leaf.setLabel(val);
 			leaf.classValue = "Bad (" + (list.size() - positive) + ")";
-			parent.getChildren().add(leaf);
+			parent.addChild(leaf);
 		}
 
 	}
@@ -263,75 +264,5 @@ public class TeaTree {
 		return line;
 	}
 
-	class TeaNode {
-
-		private ArrayList<TeaNode> children;
-		private TeaNode parent;
-		private String label;
-		private String attribute;
-		private int attributeNum;
-		private String classValue;
-		private int level;
-
-		public ArrayList<TeaNode> getChildren() {
-			return children;
-		}
-
-		public void setChildren(ArrayList<TeaNode> children) {
-			this.children = children;
-		}
-
-		public TeaNode getParent() {
-			return parent;
-		}
-
-		public void setParent(TeaNode parent) {
-			this.parent = parent;
-		}
-
-		public String getLabel() {
-			return label;
-		}
-
-		public void setLabel(String label) {
-			this.label = label;
-		}
-
-		public String getAttribute() {
-			return attribute;
-		}
-
-		public void setAttribute(String attribute) {
-			this.attribute = attribute;
-		}
-
-		public void setAttribute(int num) {
-			switch (num) {
-				case (0):
-					this.attribute = "TEA TYPE";
-					break;
-				case (1):
-					this.attribute = "SUGAR";
-					break;
-				default:
-					this.attribute = "ADDITION";
-			}
-			this.attributeNum = num;
-		}
-
-		public int getAttributeNum() {
-			return attributeNum;
-		}
-
-		public void setAttributeNum(int attributeNum) {
-			this.attributeNum = attributeNum;
-		}
-
-		public TeaNode() {
-			label = "";
-			children = new ArrayList<>();
-			parent = null;
-			classValue = null;
-		}
-	}
+	
 }

@@ -10,13 +10,13 @@
 		<script type="text/javascript" src="/TeaClassifier/resources/js/index.js"></script>
     </head>
 
-    <body ng-controller="IndexCtrl">
-        <form action="/customData.htm">
-			<textarea name="data">
+    <body>
+	<form action="/customData.htm">
+		<textarea name="data">
 				
-			</textarea>
-			<input type="submit" value="Rebuild tree"/>
-		</form>
-		${tree}
-    </body>
+		</textarea>
+		<input type="submit" value="Rebuild tree"/>
+	</form>
+	${tree}
+</body>
 </html>

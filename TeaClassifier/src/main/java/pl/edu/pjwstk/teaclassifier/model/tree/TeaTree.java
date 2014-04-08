@@ -15,9 +15,10 @@ import pl.edu.pjwstk.teaclassifier.model.Tea;
  *
  * @author sergio
  */
-public class TeaTree implements Serializable{
+public class TeaTree implements Serializable {
 
 	private TeaNode root;
+	private Integer length = 0;
 
 	public TeaNode getRoot() {
 		return root;
@@ -25,6 +26,14 @@ public class TeaTree implements Serializable{
 
 	public String getRootStr() {
 		return root.attribute + " " + root.label + " " + root.parent;
+	}
+
+	public Integer getLength() {
+		return length;
+	}
+
+	public void setLength(Integer length) {
+		this.length = length;
 	}
 
 	public TeaTree(TeaClassifier tc) {
@@ -39,6 +48,7 @@ public class TeaTree implements Serializable{
 			}
 		}
 		root = new TeaNode();
+		root.label = "root";
 		root.setAttribute(bestAttr);
 		root.setAttributeNum(bestAttr);
 		String[] valueCombo = new String[2];
@@ -47,6 +57,9 @@ public class TeaTree implements Serializable{
 	}
 
 	private void buildTree(TeaClassifier tc, TeaNode parent, String[] valueCombo, int level, List<Integer> usedAttributes) {
+		if (length < level) {
+			length = level;
+		}
 		if (parent.getAttributeNum() == 0) {
 			for (String val : Tea.TEA_TYPE_VALUES) {
 				String[] newValueCombo = new String[2];
@@ -264,5 +277,44 @@ public class TeaTree implements Serializable{
 		return line;
 	}
 
-	
+	public static List<TeaNode> nodes(TeaNode node) {
+		List<TeaNode> list = new ArrayList<>();
+		if (node.children.size() > 0) {
+			for (TeaNode child : node.children) {
+				list.add(child);
+				list.addAll(nodes(child));
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * Zwraca kod na stronę html dla Arrows-and-boxes.
+	 *
+	 * @param parent
+	 * @return
+	 */
+	public String getAnBHtml() {
+		List<TeaNode> nodes = nodes(this.root);
+		String html = "(" + root.attribute + "";
+		for (TeaNode child : root.children) {
+			html += " >" + child.getLabel() + " [" + root.label.replace(" ", "") + child.label.replace(" ", "") + "]";
+		}
+		html += ") || ";
+		for (int i = 1; i < this.length; i++) {
+			for (TeaNode parent : nodes) {
+				if (parent.level == i) {
+					html += "(" + parent.parent.label.replace(" ", "") + parent.label.replace(" ", "") + ":" + parent.attribute + "";
+					for (TeaNode child : parent.getChildren()) {
+						html += " >" + child.label + " [" + parent.label.replace(" ", "") + child.label.replace(" ", "") + "]";
+					}
+					html += ")";
+				}			
+			}
+			html+=" || ";
+		}
+		html += " || ";
+		return html;
+	}
+
 }

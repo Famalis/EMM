@@ -6,14 +6,8 @@
 
 package pl.edu.pjwstk.teaclassifier.controller;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +42,9 @@ public class IndexController {
 		model.put("treeJson", Utils.convertObjectToJSON(tree));
 		model.put("root", tree.getRoot());
 		model.put("rootJson", Utils.convertObjectToJSON(tree.getRoot()));
+		//String[] strArr =TeaTree.nodes(tree.getRoot()).toArray();
+		model.put("nodesList", Utils.convertObjectListToJSON(TeaTree.nodes(tree.getRoot())));
+		model.put("treeGraphHtml", tree.getAnBHtml());
 		return "index";
 	}
 	

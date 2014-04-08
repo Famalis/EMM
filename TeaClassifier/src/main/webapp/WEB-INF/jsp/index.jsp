@@ -23,16 +23,17 @@
 					if(parent.classValue != null) {
 						line+="<text>"+parent.classValue+"</text></svg>";
 					} else {
-						line+="<text x='0' y='15' fill='red'>I love SVG!</text></svg>";
+						line+="<text x='0' y='15' fill='red'>"+parent.attribute+"</text></svg>";
 					}
 					var newX = x;
-					var newY = y;					
-					for (var i = 0; i < parent.children.length; i++) {
-						
-						newX+=50;
-						newY+=50;
+					var newY = y;	
+					newX = x+x/2;
+					newY = y+50;
+					var tmpX = 0;
+					for (var i = 0; i < parent.children.length; i++) {	
+						tmpX+=(newX/parent.children.length);
 						var node = parent.children[i];						
-						line +="</br>"+printNodes(node,newX,newY);
+						line +="</br>"+printNodes(node,tmpX,newY);
 					}
 					return line;
 				}
@@ -48,7 +49,7 @@
 				//	Container: container,
 				//	RootNode: rootNode
 				//});
-				document.getElementById("printHere").innerHTML = printNodes(tree.root,0,0);
+				document.getElementById("printHere").innerHTML = printNodes(tree.root,300,0);
 
 
 		</script>

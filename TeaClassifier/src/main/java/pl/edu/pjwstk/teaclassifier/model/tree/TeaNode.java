@@ -1,6 +1,7 @@
 package pl.edu.pjwstk.teaclassifier.model.tree;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -43,6 +44,7 @@ public class TeaNode implements Serializable {
 		this.children = children;
 	}
 
+	@JsonIgnore
 	public TeaNode getParent() {
 		return parent;
 	}

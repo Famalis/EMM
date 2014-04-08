@@ -1,6 +1,6 @@
 function IndexCtrl($scope, $http) {
 	$scope.aVar = "this is a var";
-	
+	$scope.tree = "";
 	var loadDataPromise = $http.get("getTree.htm").success(function(returnData) {
 		return returnData;
 	}).error(function(error) {
@@ -11,10 +11,16 @@ function IndexCtrl($scope, $http) {
 
 	loadDataPromise.then(function(initData) {
 		if (initData != null) {
-			$scope.initData = initData;
-			alert(initData.attribute);
+			$scope.tree = initData;
 		} else {
 			alert('err');
 		}
 	});
+	
+	$scope.printTree = function() {
+		
+	};
+	$scope.printNodes = function(parent) {
+		
+	};
 }

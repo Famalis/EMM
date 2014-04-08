@@ -41,10 +41,13 @@ public class IndexController {
 		System.out.println("Sugar "+tc.gainRatio(TeaClassifier.SUGAR)+" "+tc.sugarGain()[1]);
 		System.out.println("Addition "+tc.gainRatio(TeaClassifier.ADDITION));
 		System.out.println("Tea type "+tc.gainRatio(TeaClassifier.TEA_TYPE));
-		TeaTree tree = new TeaTree(tc);		
+		TeaTree tree = new TeaTree(tc);
+		System.out.println(Utils.convertObjectToJSON(tree.getRoot()));		
 		tree.print();
-		model.put("tree", tree.htmlString());
+		model.put("treeHtml", tree.htmlString());
+		model.put("treeJson", Utils.convertObjectToJSON(tree));
 		model.put("root", tree.getRoot());
+		model.put("rootJson", Utils.convertObjectToJSON(tree.getRoot()));
 		return "index";
 	}
 	
@@ -57,8 +60,7 @@ public class IndexController {
 		TeaTree tree = new TeaTree(tc);
 		Map<String, Object> initData = new HashMap<>();
 		initData.put("tree", tree);
-		System.out.println(Utils.convertObjectToJSON(tree.getRoot().toString()));
-		return new ResponseEntity<String>(Utils.convertObjectToJSON(tree.getRoot())
+		return new ResponseEntity<String>(Utils.convertObjectToJSON(tree)
 				, HttpStatus.CREATED);
 	}
 	

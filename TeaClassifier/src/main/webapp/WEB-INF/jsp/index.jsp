@@ -15,31 +15,40 @@
 
     <body ng-controller="IndexCtrl">
 		<div id="dvTreeContainer"></div>
-		<div style="width: 300px; height: 300px; background-color: grey;" id="printHere"></div>
+		<div id="printHere"></div>
 		<script type="text/javascript">
-				function printNodes(parent,x,y) {
-					var line = "<svg style='position: absolute; left:"+x+"px; top:"+y+"px' width='200' height='200'>";
-					line+="<circle cx='35' cy='35' r='35' fill='black'/>";
-					if(parent.classValue != null) {
-						line+="<text style='font-size: 11px' x='8' y='40' fill='red'>"+parent.classValue+"</text></svg>";
+				function printNodes(parent, x, y) {
+					var line = "<svg style='position: absolute; left:" + x + "px; top:" + y + "px' width='200' height='200'>";
+					line += "<circle cx='35' cy='35' r='35' fill='black'/>";
+					if (parent.classValue != null) {
+						line += "<text style='font-size: 11px' x='8' y='40' fill='red'>" + parent.classValue + " " + x + "</text></svg>";
 					} else {
-						line+="<text style='font-size: 11px' x='8' y='40' fill='red'>"+parent.attribute+"</text></svg>";
+						line += "<text style='font-size: 11px' x='8' y='40' fill='red'>" + parent.attribute + " " + x + "</text></svg>";
 					}
 					var newX = x;
-					var newY = y;	
-					newX = x+x/2;
-					newY = y+150;
+					var newY = y;
+					newX = x + x / 2;
+					newY = y + 150;
 					var tmpX = 0;
-					for (var i = 0; i < parent.children.length; i++) {	
-						tmpX+=(newX/parent.children.length);
-						var node = parent.children[i];						
-						line +="</br>"+printNodes(node,tmpX,newY);
+					for (var i = 0; i < parent.children.length; i++) {
+						tmpX += (newX / parent.children.length);
+						var node = parent.children[i];
+						line += "</br>" + printNodes(node, tmpX, newY);
 					}
 					return line;
 				}
 				var tree = ${treeJson};
 				var a = tree.root;
-				var rootNode = ${rootJson};
+				var rootNode = new Object();
+				rootNode.Content = "Root Node";
+				rootNode.Nodes = new Array();
+
+				// Start Adding nodes
+				rootNode.Nodes[0] = {Content: "Fisrt Child"};
+				rootNode.Nodes[1] = {Content: "Second Child", ToolTip: "My Tooltip"};
+
+				// Second Level Nodes
+				rootNode.Nodes[1].Nodes = [{Content: "1.2.1"}, {Content: "1.2.2"}]
 
 				// Get the reference to a container layer
 				var container = document.getElementById("dvTreeContainer");
@@ -49,10 +58,10 @@
 				//	Container: container,
 				//	RootNode: rootNode
 				//});
-				document.getElementById("printHere").innerHTML = printNodes(tree.root,500,0);
+				document.getElementById("printHere").innerHTML = printNodes(tree.root, 500, 0);
 
 
 		</script>
-				${treeHtml}
+		${treeHtml}
 	</body>
 </html>

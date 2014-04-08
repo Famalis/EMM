@@ -17,6 +17,7 @@
 		<div id="dvTreeContainer"></div>
 		<div id="printHere"></div>
 		<script type="text/javascript">
+			/*
 				function printNodes(parent, x, y) {
 					var line = "<svg style='position: absolute; left:" + x + "px; top:" + y + "px' width='200' height='200'>";
 					line += "<circle cx='35' cy='35' r='35' fill='black'/>";
@@ -37,28 +38,38 @@
 					}
 					return line;
 				}
+				*/
+				function addChildren(parent, parentNode) {
+					for (var i = 0; i<parent.children.length; i++) {
+						var node = parent.children[i];
+						var content;
+						if(node.classValue != null) {
+							content = node.classValue;
+						} else {
+							content = node.attribute;
+						}
+						parentNode.Nodes[i] = {Content: content, ToolTip: node.label};
+						parentNode.Nodes[i].Nodes = new Array();
+						addChildren(node, parentNode.Nodes[i]);
+					}
+				}
 				var tree = ${treeJson};
 				var a = tree.root;
 				var rootNode = new Object();
-				rootNode.Content = "Root Node";
+				rootNode.Content = tree.root.attribute;
 				rootNode.Nodes = new Array();
-
-				// Start Adding nodes
-				rootNode.Nodes[0] = {Content: "Fisrt Child"};
-				rootNode.Nodes[1] = {Content: "Second Child", ToolTip: "My Tooltip"};
-
-				// Second Level Nodes
-				rootNode.Nodes[1].Nodes = [{Content: "1.2.1"}, {Content: "1.2.2"}]
+				
+				addChildren(tree.root, rootNode);
 
 				// Get the reference to a container layer
 				var container = document.getElementById("dvTreeContainer");
 
 				// Build tree with options
-				//DrawTree({
-				//	Container: container,
-				//	RootNode: rootNode
-				//});
-				document.getElementById("printHere").innerHTML = printNodes(tree.root, 500, 0);
+				DrawTree({
+					Container: container,
+					RootNode: rootNode
+				});
+				//document.getElementById("printHere").innerHTML = printNodes(tree.root, 500, 0);
 
 
 		</script>

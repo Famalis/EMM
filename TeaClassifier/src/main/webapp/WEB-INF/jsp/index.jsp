@@ -21,9 +21,9 @@
 					var line = "<svg style='position: absolute; left:"+x+"px; top:"+y+"px' width='200' height='200'>";
 					line+="<circle cx='35' cy='35' r='35' fill='black'/>";
 					if(parent.classValue != null) {
-						line+="<text x='0' y='25' fill='red'>"+parent.classValue+"</text></svg>";
+						line+="<text style='font-size: 11px' x='8' y='40' fill='red'>"+parent.classValue+"</text></svg>";
 					} else {
-						line+="<text x='0' y='25' fill='red'>"+parent.attribute+"</text></svg>";
+						line+="<text style='font-size: 11px' x='8' y='40' fill='red'>"+parent.attribute+"</text></svg>";
 					}
 					var newX = x;
 					var newY = y;	

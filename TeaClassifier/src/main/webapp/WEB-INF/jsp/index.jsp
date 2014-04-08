@@ -18,17 +18,17 @@
 		<div style="width: 300px; height: 300px; background-color: grey;" id="printHere"></div>
 		<script type="text/javascript">
 				function printNodes(parent,x,y) {
-					var line = "<svg style='position: absolute; left:"+x+"px; top:"+y+"px' width='50' height='50'>";
-					line+="<circle cx='25' cy='25' r='20' fill='black'/>";
+					var line = "<svg style='position: absolute; left:"+x+"px; top:"+y+"px' width='200' height='200'>";
+					line+="<circle cx='35' cy='35' r='35' fill='black'/>";
 					if(parent.classValue != null) {
-						line+="<text>"+parent.classValue+"</text></svg>";
+						line+="<text x='0' y='25' fill='red'>"+parent.classValue+"</text></svg>";
 					} else {
-						line+="<text x='0' y='15' fill='red'>"+parent.attribute+"</text></svg>";
+						line+="<text x='0' y='25' fill='red'>"+parent.attribute+"</text></svg>";
 					}
 					var newX = x;
 					var newY = y;	
 					newX = x+x/2;
-					newY = y+50;
+					newY = y+150;
 					var tmpX = 0;
 					for (var i = 0; i < parent.children.length; i++) {	
 						tmpX+=(newX/parent.children.length);
@@ -49,7 +49,7 @@
 				//	Container: container,
 				//	RootNode: rootNode
 				//});
-				document.getElementById("printHere").innerHTML = printNodes(tree.root,300,0);
+				document.getElementById("printHere").innerHTML = printNodes(tree.root,500,0);
 
 
 		</script>

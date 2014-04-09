@@ -33,7 +33,7 @@ public class IndexController {
 	public String home(ModelMap model, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		TeaClassifier tc = new TeaClassifier();
 		//tc.generateTrainingSetFromTxt("teaDat.txt");
-		tc.generateTrainingSet(10);
+		tc.generateTrainingSet();
 		System.out.println("Sugar "+tc.gainRatio(TeaClassifier.SUGAR)+" "+tc.sugarGain()[1]);
 		System.out.println("Addition "+tc.gainRatio(TeaClassifier.ADDITION));
 		System.out.println("Tea type "+tc.gainRatio(TeaClassifier.TEA_TYPE));

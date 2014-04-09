@@ -59,24 +59,7 @@ public class TeaClassifier {
 		}
 	}
 
-	public void generateTrainingSet(int num) {
-		File f;
-		FileInputStream fis = null;
-		ObjectInputStream ois = null;
-		trainingSet = new ArrayList<>();
-		try {
-			f = new File(filePath);
-			fis = new FileInputStream(f);
-			ois = new ObjectInputStream(fis);
-			trainingSet = (ArrayList<Tea>) ois.readObject();
-			ois.close();
-			fis.close();
-		} catch (IOException io) {
-			io.printStackTrace();
-		} catch (ClassNotFoundException cl) {
-			cl.printStackTrace();
-		}
-
+	public void generateTrainingSet() {
 		if (trainingSet.isEmpty()) {
 			trainingSet = constantSetGenerate();
 			for (Tea t : trainingSet) {

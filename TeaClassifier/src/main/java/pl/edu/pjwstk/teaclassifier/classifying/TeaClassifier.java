@@ -8,7 +8,6 @@ package pl.edu.pjwstk.teaclassifier.classifying;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,6 +32,14 @@ public class TeaClassifier {
 		super();
 	}
 
+	public ArrayList<Tea> getTrainingSet() {
+		return trainingSet;
+	}
+
+	public void setTrainingSet(ArrayList<Tea> trainingSet) {
+		this.trainingSet = trainingSet;
+	}
+	
 	public void generateTrainingSetFromTxt(String fileName) {
 		try {
 			File f = new File(fileName);

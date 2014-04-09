@@ -19,6 +19,7 @@ public class TeaTree implements Serializable {
 
 	private TeaNode root;
 	private Integer length = 0;
+	private TeaClassifier teaClassifier;
 
 	public TeaNode getRoot() {
 		return root;
@@ -37,6 +38,7 @@ public class TeaTree implements Serializable {
 	}
 
 	public TeaTree(TeaClassifier tc) {
+		this.teaClassifier = tc;
 		double bestGain = 0.0;
 		int bestAttr = 0;
 		//0 - tea type, 1 - sugar, 2 - add
@@ -289,40 +291,53 @@ public class TeaTree implements Serializable {
 	}
 
 	/**
-	 * Zwraca kod na stronę html dla Arrows-and-boxes.
+	 * 0 - false, 1 - true, 2 - not known.
 	 *
-	 * @param parent
+	 * @param teaType
+	 * @param addition
+	 * @param sugar
 	 * @return
 	 */
-	public String getAnBHtml() {
-		List<TeaNode> nodes = nodes(this.root);
-		String html = "";
-		for (int i = 0; i < 4; i++) {
-			html += "() ";
-		}
-		html += "(" + root.attribute + "";
-		for (TeaNode child : root.children) {
-			html += " >" + child.getLabel() + " [" + root.label.replace(" ", "") + child.label.replace(" ", "") + "]";
-		}
-		html += ") || ";
-		for (int i = 1; i < 4; i++) {
-			for (TeaNode parent : nodes) {
-				if (parent.level == i) {
-					html += "(" + parent.parent.label.replace(" ", "") + parent.label.replace(" ", "") + ":";
-					if (parent.classValue != null) {
-						html += parent.classValue + "";
-					} else {
-						html += parent.attribute + "";
+	public int queryTea(String teaType, String addition, Double sugar) {
+		return queryNode(teaType, addition, sugar, root);
+	}
+
+	private int queryNode(String teaType, String addition, Double sugar, TeaNode node) {
+		if (node.classValue != null) {
+			if (node.classValue.contains("Bad")) {
+				return 0;
+			} else {
+				return 1;
+			}
+		} else {
+			if (node.attributeNum == TeaClassifier.ADDITION) {
+				for (TeaNode child : node.children) {
+					if (child.label.equals(addition)) {
+						return queryNode(teaType, addition, sugar, child);
 					}
-					for (TeaNode child : parent.getChildren()) {
-						html += " >" + child.label + " [" + parent.label.replace(" ", "") + child.label.replace(" ", "") + "]";
+				}
+				return 2;
+			} else if (node.attributeNum == TeaClassifier.TEA_TYPE) {
+				for (TeaNode child : node.children) {
+					if (child.label.equals(teaType)) {
+						return queryNode(teaType, addition, sugar, child);
 					}
-					html += ")";
+				}
+				return 2;
+			} else {
+				for (TeaNode child : node.children) {
+				if (child.label.contains("<=")
+						&& sugar <= teaClassifier.decicionSugarValue) {
+					return queryNode(teaType, addition, sugar, child);
+				} else if (child.label.contains(">")
+						&& sugar > teaClassifier.decicionSugarValue) {
+					return queryNode(teaType, addition, sugar, child);
 				}
 			}
-			html += " || ";
+			return 2;
+			}
+
 		}
-		return html;
 	}
 
 }

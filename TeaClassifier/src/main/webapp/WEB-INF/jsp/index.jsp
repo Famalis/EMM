@@ -3,15 +3,32 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 	"http://www.w3.org/TR/html4/loose.dtd">
 
-<html>
+<html ng-app>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Welcome to Spring Web MVC project</title>
-		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.5/angular.min.js"></script>
+		<script type="text/javascript" src="/TeaClassifier/resources/js/IndexCtrl.js"></script>
     </head>
 
-    <body>
-		<div style="position: absolute; left: 0px; width: 200px" id="trainingSet">
+    <body ng-controller="IndexCtrl" bgcolor="grey">
+		<div style="position: absolute; left: 0px; height: 200px; width: 100%; background-color: lightblue">
+			Rodzaj herbaty:
+			<select>
+				<option ng-model="teaType" value="black tea">Czarna</option>
+				<option ng-model="teaType" value="white tea">Biała</option>
+				<option ng-model="teaType" value="green tea">Zielona</option>
+			</select>
+			Dodatek:
+			<select>
+				<option ng-model="addition" value="none">Brak</option>
+				<option ng-model="addition" value="lemon">Cytryna</option>
+				<option ng-model="addition" value="milk">Mleko</option>
+			</select>
+			<input type="text" ng-model="sugar" placeholder="Ile cukru..." value="0"/>
+		</div>
+		<div style="position: absolute; left: 0px; top: 210px; width: 200px; background-color: lightblue" id="trainingSet">
 			<p>
 				Dane do nauki:
 			</p>
@@ -19,7 +36,7 @@
 				<p style="border: 1px solid">${item}</p>
 			</c:forEach>
 		</div>
-		<div style="position: absolute; left: 210px; background-color: lightgrey" id="printGraph"></div>
+		<div style="position: absolute; left: 210px; top: 210px; background-color: lightblue" id="printGraph"></div>
 		<script type="text/javascript">
 			var tree = ${treeJson};
 			var nodesList = ${nodesList};
@@ -71,7 +88,7 @@
 					labelHeightMod += 20;
 					var newMinWidth = x - ((maxWidth - minWidth) * newMod);
 					var newMaxWidth = x + ((maxWidth - minWidth) * newMod);
-					html += drawChildren(child, newMinWidth, newMaxWidth, height + 200, x, y, newMod * 0.5);
+					html += drawChildren(child, newMinWidth, newMaxWidth, height + 200, x, y, newMod*0.3);
 					x += ((maxWidth - minWidth)) / (parent.children.length - 1);
 				}
 				return html;

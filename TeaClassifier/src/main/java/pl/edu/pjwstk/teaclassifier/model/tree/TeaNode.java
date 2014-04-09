@@ -30,8 +30,7 @@ public class TeaNode implements Serializable {
 	public void setLevel(int level) {
 		this.level = level;
 	}
-
-	@JsonIgnore
+	
 	public ArrayList<TeaNode> getChildren() {
 		return children;
 	}
@@ -45,6 +44,7 @@ public class TeaNode implements Serializable {
 		this.children = children;
 	}
 	
+	@JsonIgnore
 	public TeaNode getParent() {
 		return parent;
 	}

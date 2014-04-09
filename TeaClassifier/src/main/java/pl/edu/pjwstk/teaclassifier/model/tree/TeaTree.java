@@ -57,8 +57,8 @@ public class TeaTree implements Serializable {
 	}
 
 	private void buildTree(TeaClassifier tc, TeaNode parent, String[] valueCombo, int level, List<Integer> usedAttributes) {
-		if (length < level) {
-			length = level;
+		if (length < level + 1) {
+			length = level + 1;
 		}
 		if (parent.getAttributeNum() == 0) {
 			for (String val : Tea.TEA_TYPE_VALUES) {
@@ -296,24 +296,32 @@ public class TeaTree implements Serializable {
 	 */
 	public String getAnBHtml() {
 		List<TeaNode> nodes = nodes(this.root);
-		String html = "(" + root.attribute + "";
+		String html = "";
+		for (int i = 0; i < 4; i++) {
+			html += "() ";
+		}
+		html += "(" + root.attribute + "";
 		for (TeaNode child : root.children) {
 			html += " >" + child.getLabel() + " [" + root.label.replace(" ", "") + child.label.replace(" ", "") + "]";
 		}
 		html += ") || ";
-		for (int i = 1; i < this.length; i++) {
+		for (int i = 1; i < 4; i++) {
 			for (TeaNode parent : nodes) {
 				if (parent.level == i) {
-					html += "(" + parent.parent.label.replace(" ", "") + parent.label.replace(" ", "") + ":" + parent.attribute + "";
+					html += "(" + parent.parent.label.replace(" ", "") + parent.label.replace(" ", "") + ":";
+					if (parent.classValue != null) {
+						html += parent.classValue + "";
+					} else {
+						html += parent.attribute + "";
+					}
 					for (TeaNode child : parent.getChildren()) {
 						html += " >" + child.label + " [" + parent.label.replace(" ", "") + child.label.replace(" ", "") + "]";
 					}
 					html += ")";
-				}			
+				}
 			}
-			html+=" || ";
+			html += " || ";
 		}
-		html += " || ";
 		return html;
 	}
 

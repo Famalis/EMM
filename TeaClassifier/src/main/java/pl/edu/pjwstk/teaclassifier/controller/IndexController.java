@@ -30,8 +30,8 @@ public class IndexController {
 	@RequestMapping("/index")
 	public String home(ModelMap model) {
 		TeaClassifier tc = new TeaClassifier();
-		tc.generateTrainingSetFromTxt("teaDat.txt");
-		//tc.generateTrainingSet(10);
+		//tc.generateTrainingSetFromTxt("teaDat.txt");
+		tc.generateTrainingSet(10);
 		System.out.println("Sugar "+tc.gainRatio(TeaClassifier.SUGAR)+" "+tc.sugarGain()[1]);
 		System.out.println("Addition "+tc.gainRatio(TeaClassifier.ADDITION));
 		System.out.println("Tea type "+tc.gainRatio(TeaClassifier.TEA_TYPE));

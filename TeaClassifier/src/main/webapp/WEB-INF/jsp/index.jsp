@@ -102,7 +102,7 @@
                     labelHeightMod += 20;
                     var newMinWidth = x - ((maxWidth - minWidth) * newMod);
                     var newMaxWidth = x + ((maxWidth - minWidth) * newMod);
-                    html += drawChildren(child, newMinWidth, newMaxWidth, height + 200, x, y, newMod * 0.3);
+                    html += drawChildren(child, newMinWidth, newMaxWidth, height + 200, x, y, newMod * 0.8);
                     x += ((maxWidth - minWidth)) / (parent.children.length - 1);
                 }
                 return html;

@@ -84,32 +84,32 @@ public class TeaTree implements Serializable {
                 double percentGood = (double) positive / (double) list.size();
                 if (newUsed.size() == 3) {
                     addLeaf(list, positive, parent, val);
-                    return;
-                }
-
-                TeaNode child = new TeaNode();
-                child.level = level + 1;
-                child.setLabel(val);
-                if (percentGood == 1.0) {
-                    child.classValue = "Good (" + positive + ")";
-                } else if (percentGood == 0.0) {
-                    child.classValue = "Bad (" + (list.size() - positive) + ")";
                 } else {
-                    double bestGain = 0.0;
-                    int bestAttr = 0;
-                    //0 - tea type, 1 - sugar, 2 - add
-                    for (int i = 0; i < 3; i++) {
-                        double tmpGain = tc.gainRatio(i);
-                        if (tmpGain > bestGain
-                                && !newUsed.contains(i)) {
-                            bestAttr = i;
-                            bestGain = tmpGain;
+
+                    TeaNode child = new TeaNode();
+                    child.level = level + 1;
+                    child.setLabel(val);
+                    if (percentGood == 1.0) {
+                        child.classValue = "Good (" + positive + ")";
+                    } else if (percentGood == 0.0) {
+                        child.classValue = "Bad (" + (list.size() - positive) + ")";
+                    } else {
+                        double bestGain = 0.0;
+                        int bestAttr = 0;
+                        //0 - tea type, 1 - sugar, 2 - add
+                        for (int i = 0; i < 3; i++) {
+                            double tmpGain = tc.gainRatio(i);
+                            if (tmpGain > bestGain
+                                    && !newUsed.contains(i)) {
+                                bestAttr = i;
+                                bestGain = tmpGain;
+                            }
                         }
+                        child.setAttribute(bestAttr);
+                        buildTree(tc, child, newValueCombo, level + 1, newUsed, sugar);
                     }
-                    child.setAttribute(bestAttr);
-                    buildTree(tc, child, newValueCombo, level + 1, newUsed, sugar);
+                    parent.addChild(child);
                 }
-                parent.addChild(child);
             }
         } else if (parent.getAttributeNum() == 2) {
 
@@ -134,38 +134,38 @@ public class TeaTree implements Serializable {
 
                 if (newUsed.size() == 3) {
                     addLeaf(list, positive, parent, val);
-                    return;
-                }
-
-                TeaNode child = new TeaNode();
-                child.level = level + 1;
-                double percentGood = (double) positive / (double) list.size();
-                if (percentGood == 1.0) {
-                    child.classValue = "Good (" + positive + ")";
-                } else if (percentGood == 0.0) {
-                    child.classValue = "Bad (" + (list.size() - positive) + ")";
                 } else {
-                    double bestGain = 0.0;
-                    int bestAttr = 0;
-                    //0 - tea type, 1 - sugar, 2 - add
-                    for (int i = 0; i < 3; i++) {
-                        double tmpGain = tc.gainRatio(i);
-                        if (tmpGain > bestGain
-                                && !newUsed.contains(i)) {
-                            bestAttr = i;
-                            bestGain = tmpGain;
+
+                    TeaNode child = new TeaNode();
+                    child.level = level + 1;
+                    double percentGood = (double) positive / (double) list.size();
+                    if (percentGood == 1.0) {
+                        child.classValue = "Good (" + positive + ")";
+                    } else if (percentGood == 0.0) {
+                        child.classValue = "Bad (" + (list.size() - positive) + ")";
+                    } else {
+                        double bestGain = 0.0;
+                        int bestAttr = 0;
+                        //0 - tea type, 1 - sugar, 2 - add
+                        for (int i = 0; i < 3; i++) {
+                            double tmpGain = tc.gainRatio(i);
+                            if (tmpGain > bestGain
+                                    && !newUsed.contains(i)) {
+                                bestAttr = i;
+                                bestGain = tmpGain;
+                            }
                         }
+                        child.setAttribute(bestAttr);
+                        buildTree(tc, child, newValueCombo, level + 1, newUsed, sugar);
                     }
-                    child.setAttribute(bestAttr);
-                    buildTree(tc, child, newValueCombo, level + 1, newUsed, sugar);
+                    child.setLabel(val);
+                    parent.addChild(child);
                 }
-                child.setLabel(val);
-                parent.addChild(child);
             }
         } else if (parent.getAttributeNum() == 1) {
             for (int p = 0; p < 2; p++) {
                 int newSugar = p;
-                String label = newSugar==0 ? "<="+tc.sugarGain()[1] : ">"+tc.sugarGain()[1];
+                String label = newSugar == 0 ? "<=" + tc.sugarGain()[1] : ">" + tc.sugarGain()[1];
                 List<Integer> newUsed = new ArrayList<>();
                 newUsed.addAll(usedAttributes);
                 newUsed.add(1);
@@ -174,7 +174,6 @@ public class TeaTree implements Serializable {
                     return;
                 }
 
-                
                 int positive = 0;
                 for (Tea t : list) {
                     if (t.isDrinkable()) {
@@ -183,48 +182,49 @@ public class TeaTree implements Serializable {
                 }
                 if (newUsed.size() == 3) {
                     addLeaf(list, positive, parent, label);
-                    return;
-                }
-                TeaNode child = new TeaNode();
-                child.level = level + 1;
-                double percentGood = (double) positive / (double) list.size();
-                if (percentGood == 1.0) {
-                    child.classValue = "Good (" + positive + ")";
-                } else if (percentGood == 0.0) {
-                    child.classValue = "Bad (" + (list.size() - positive) + ")";
                 } else {
-                    double bestGain = 0.0;
-                    int bestAttr = 0;
-                    //0 - tea type, 1 - sugar, 2 - add
-                    for (int i = 0; i < 3; i++) {
-                        double tmpGain = tc.gainRatio(i);
-                        if (tmpGain > bestGain
-                                && !newUsed.contains(i)) {
-                            bestAttr = i;
-                            bestGain = tmpGain;
+                    TeaNode child = new TeaNode();
+                    child.level = level + 1;
+                    double percentGood = (double) positive / (double) list.size();
+                    if (percentGood == 1.0) {
+                        child.classValue = "Good (" + positive + ")";
+                    } else if (percentGood == 0.0) {
+                        child.classValue = "Bad (" + (list.size() - positive) + ")";
+                    } else {
+                        double bestGain = 0.0;
+                        int bestAttr = 0;
+                        //0 - tea type, 1 - sugar, 2 - add
+                        for (int i = 0; i < 3; i++) {
+                            double tmpGain = tc.gainRatio(i);
+                            if (tmpGain > bestGain
+                                    && !newUsed.contains(i)) {
+                                bestAttr = i;
+                                bestGain = tmpGain;
+                            }
                         }
+                        child.setAttribute(bestAttr);
+                        buildTree(tc, child, valueCombo, level + 1, newUsed, newSugar);
                     }
-                    child.setAttribute(bestAttr);
-                    buildTree(tc, child, valueCombo, level + 1, newUsed, newSugar);
+
+                    child.setLabel(label);
+                    parent.addChild(child);
                 }
-                
-                child.setLabel(label);
-                parent.addChild(child);
             }
 
         }
     }
 
     private void addLeaf(ArrayList<Tea> list, int positive, TeaNode parent, String val) {
-
-        if (positive > 0) {
+        int a = 0;
+        int negative = list.size() - positive;
+        if (positive > negative) {
             TeaNode leaf = new TeaNode();
             leaf.level = parent.level + 1;
             leaf.setLabel(val);
             leaf.classValue = "Good (" + positive + ")";
             parent.addChild(leaf);
         }
-        if (list.size() - positive > 0) {
+        else {
             TeaNode leaf = new TeaNode();
             leaf.level = parent.level + 1;
             leaf.setLabel(val);

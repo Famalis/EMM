@@ -84,6 +84,7 @@ public class TeaClassifier {
 		list.add(new Tea(Tea.GREEN_TEA, 0.0, Tea.NONE, true));
 		list.add(new Tea(Tea.GREEN_TEA, 25.0, Tea.MILK, false));
 		list.add(new Tea(Tea.GREEN_TEA, 43.0, Tea.LEMON, true));
+        list.add(new Tea(Tea.GREEN_TEA, 0.0, Tea.LEMON, true));
         list.add(new Tea(Tea.GREEN_TEA, 143.0, Tea.LEMON, false));
 		list.add(new Tea(Tea.WHITE_TEA, 0.0, Tea.NONE, false));
 		list.add(new Tea(Tea.WHITE_TEA, 19.0, Tea.MILK, true));

@@ -50,7 +50,8 @@ public class IndexController {
 		model.addAttribute("rootJson", Utils.convertObjectToJSON(tree.getRoot()));
 		model.addAttribute("nodesList", Utils.convertObjectListToJSON(TeaTree.nodes(tree.getRoot())));
 		model.addAttribute("trainingSet", tc.getTrainingSet());
-		System.out.println(tree.queryTea("white tea", "lemon", 25.0));
+        String[] values = {"green tea","lemon"};
+		System.out.println(tc.getTeasWithValueS(values, -1));
 		return "index";
 	}
     

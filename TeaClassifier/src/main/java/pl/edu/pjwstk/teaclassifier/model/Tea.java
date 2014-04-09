@@ -14,15 +14,15 @@ import java.io.Serializable;
  */
 public class Tea implements Serializable, Comparable{
 	
-	public static String 
+	public static final String 
 			WHITE_TEA = "white tea",
 			BLACK_TEA = "black tea",
 			GREEN_TEA = "green tea",
 			MILK = "milk",
 			LEMON = "lemon",
 			NONE = "none";
-	public static String[] TEA_TYPE_VALUES = {WHITE_TEA, BLACK_TEA, GREEN_TEA};
-	public static String[] ADDITION_VALUES = {MILK, LEMON, NONE};
+	public static final String[] TEA_TYPE_VALUES = {WHITE_TEA, BLACK_TEA, GREEN_TEA};
+	public static final String[] ADDITION_VALUES = {MILK, LEMON, NONE};
 	private Double sugar;
 	private String teaType;
 	private String addition;

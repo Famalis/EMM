@@ -327,10 +327,10 @@ public class TeaTree implements Serializable {
 			} else {
 				for (TeaNode child : node.children) {
 				if (child.label.contains("<=")
-						&& sugar <= teaClassifier.decicionSugarValue) {
+						&& sugar <= teaClassifier.sugarGain()[1]) {
 					return queryNode(teaType, addition, sugar, child);
 				} else if (child.label.contains(">")
-						&& sugar > teaClassifier.decicionSugarValue) {
+						&& sugar > teaClassifier.sugarGain()[1]) {
 					return queryNode(teaType, addition, sugar, child);
 				}
 			}

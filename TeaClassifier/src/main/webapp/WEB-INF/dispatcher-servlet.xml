@@ -12,7 +12,7 @@
 		<property name="mappings">
 			<props>
 				<prop key="index.htm">indexController</prop>
-				<prop key="getTree.htm">indexController</prop>
+				<prop key="query.htm">indexController</prop>
 			</props>
 		</property>
 	</bean>

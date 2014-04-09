@@ -26,8 +26,7 @@ public class TeaClassifier {
 	private static String filePath = "teaData";
 
 	public static int TEA_TYPE = 0, SUGAR = 1, ADDITION = 2;
-	public double decicionSugarValue;
-
+    private double[] sugarGain = new double[2];
 	public TeaClassifier() {
 		super();
 	}
@@ -357,7 +356,9 @@ public class TeaClassifier {
 	 * @return
 	 */
 	public double[] sugarGain() {
-		double results[] = new double[2];
+        if(this.sugarGain[1]>0) {
+            return sugarGain;
+        }
 		double bestGain = 0.0;
 		double bestValue = 0.0;
 		for (Tea t : trainingSet) {
@@ -368,9 +369,9 @@ public class TeaClassifier {
 				bestValue = tmpValue;
 			}
 		}
-		results[0] = bestGain;
-		results[1] = bestValue;
-		return results;
+        sugarGain[0] = bestGain;
+        sugarGain[1] = bestValue;;
+		return sugarGain;
 	}
 
 	private double gainForSugarValue(double val) {

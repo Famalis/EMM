@@ -63,15 +63,6 @@ public class TeaClassifier {
 		if (trainingSet.isEmpty()) {
 			trainingSet = constantSetGenerate();
 			for (Tea t : trainingSet) {
-				if (t.getTeaType().equals(Tea.BLACK_TEA)) {
-					t.setDrinkable(true);
-				} else if (t.getAddition().equals(Tea.LEMON)
-						&& t.getSugar() >= 30 && t.getSugar() <= 100) {
-					t.setDrinkable(true);
-				} else if (t.getAddition().equals(Tea.MILK)
-						&& t.getSugar() < 30) {
-					t.setDrinkable(true);
-				}
 				System.out.println(t.toString());
 			}
 		}
@@ -84,20 +75,24 @@ public class TeaClassifier {
 
 	private ArrayList<Tea> constantSetGenerate() {
 		ArrayList<Tea> list = new ArrayList<>();
-		list.add(new Tea(Tea.BLACK_TEA, 0.0, Tea.NONE));
-		list.add(new Tea(Tea.BLACK_TEA, 10.0, Tea.MILK));
-		list.add(new Tea(Tea.BLACK_TEA, 30.0, Tea.LEMON));
-		list.add(new Tea(Tea.GREEN_TEA, 0.0, Tea.NONE));
-		list.add(new Tea(Tea.GREEN_TEA, 25.0, Tea.MILK));
-		list.add(new Tea(Tea.GREEN_TEA, 43.0, Tea.LEMON));
-		list.add(new Tea(Tea.WHITE_TEA, 0.0, Tea.NONE));
-		list.add(new Tea(Tea.WHITE_TEA, 19.0, Tea.MILK));
-		list.add(new Tea(Tea.WHITE_TEA, 37.0, Tea.LEMON));
-		list.add(new Tea(Tea.GREEN_TEA, 0.0, Tea.LEMON));
-		list.add(new Tea(Tea.WHITE_TEA, 150.0, Tea.MILK));
-		list.add(new Tea(Tea.GREEN_TEA, 139.0, Tea.LEMON));
-		list.add(new Tea(Tea.WHITE_TEA, 0.0, Tea.LEMON));
-		list.add(new Tea(Tea.WHITE_TEA, 0.0, Tea.MILK));
+		list.add(new Tea(Tea.BLACK_TEA, 0.0, Tea.NONE, true));
+		list.add(new Tea(Tea.BLACK_TEA, 10.0, Tea.MILK, true));
+		list.add(new Tea(Tea.BLACK_TEA, 30.0, Tea.LEMON, true));
+        list.add(new Tea(Tea.BLACK_TEA, 303.0, Tea.LEMON, true));
+        list.add(new Tea(Tea.BLACK_TEA, 403.0, Tea.MILK, true));
+        list.add(new Tea(Tea.BLACK_TEA, 350.0, Tea.NONE, true));
+		list.add(new Tea(Tea.GREEN_TEA, 0.0, Tea.NONE, true));
+		list.add(new Tea(Tea.GREEN_TEA, 25.0, Tea.MILK, false));
+		list.add(new Tea(Tea.GREEN_TEA, 43.0, Tea.LEMON, true));
+        list.add(new Tea(Tea.GREEN_TEA, 143.0, Tea.LEMON, false));
+		list.add(new Tea(Tea.WHITE_TEA, 0.0, Tea.NONE, false));
+		list.add(new Tea(Tea.WHITE_TEA, 19.0, Tea.MILK, true));
+		list.add(new Tea(Tea.WHITE_TEA, 37.0, Tea.LEMON, false));
+		list.add(new Tea(Tea.GREEN_TEA, 0.0, Tea.LEMON, true));
+		list.add(new Tea(Tea.WHITE_TEA, 150.0, Tea.MILK, true));
+		list.add(new Tea(Tea.GREEN_TEA, 139.0, Tea.LEMON, false));
+		list.add(new Tea(Tea.WHITE_TEA, 0.0, Tea.LEMON, false));
+		list.add(new Tea(Tea.WHITE_TEA, 0.0, Tea.MILK, true));
 		return list;
 	}
 
@@ -327,7 +322,7 @@ public class TeaClassifier {
 	public double gainRatio(int attr) {
 		switch(attr) {
 			case(0): return gain(attr)/teaTypeSplitInfo();
-			case(1): return gain(attr)/additionalSplitInfo();
+			case(2): return gain(attr)/additionalSplitInfo();
 			default: return sugarGain()[0];
 		}
 	}
@@ -387,14 +382,27 @@ public class TeaClassifier {
 		return info() - result;
 	}
 
-	public ArrayList<Tea> getTeasWithValueS(String[] values) {
+    /**
+     * sugar: -1 = ignore, 0 = less or equal, 1 = greater
+     * @param values
+     * @param sugar
+     * @return 
+     */
+	public ArrayList<Tea> getTeasWithValueS(String[] values, int sugar) {
 
 		ArrayList<Tea> teas = new ArrayList<>();
 
 		for (Tea t : trainingSet) {
 			if ((t.getTeaType().equals(values[0]) || values[0] == null)
 					&& (t.getAddition().equals(values[1]) || values[1] == null)) {
-				teas.add(t);
+                if(sugar==-1){
+                    teas.add(t);
+                } else if(sugar==0 && t.getSugar()<=this.sugarGain()[1]) {
+                    teas.add(t);
+                } else if(sugar==1 && t.getSugar()>this.sugarGain()[1]) {
+                    teas.add(t);
+                }
+				
 			}
 		}
 

@@ -67,6 +67,15 @@ public class Tea implements Serializable, Comparable{
 		this.sugar = sugar;
 		this.teaType = type;
 	}
+    
+    public Tea(String type, Double sugar, String add, boolean b) {
+		super();
+		this.drinkable = false;
+		this.addition = add;
+		this.sugar = sugar;
+		this.teaType = type;
+        this.drinkable = b;
+	}
 	
 	public Tea() {
 		super();

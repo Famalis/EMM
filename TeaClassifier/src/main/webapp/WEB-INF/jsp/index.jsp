@@ -74,9 +74,13 @@
 			;
 
 			function drawLine(x1, y1, x2, y2, label) {
+				var midX = getMidPoint(x1,y1,x2,y2)[0]+5;
+				var midY = getMidPoint(x1,y1,x2,y2)[1];
 				var html = ""
 					html+= "<line x1='"+x1+"' y1='"+y1+"' x2='"+x2+"' y2='"+y2+"' style='stroke:rgb(0,0,0);stroke-width:2' />";
-					html+= "<text x='"+x2/2+"' y='"+y2/2+"' fill='red'>"+label+"</text>";
+					html+= "<text x='"+(midX)+"' y='"+
+							(midY)+"' fill='red'"+
+							" transform='rotate("+getAngleBetweenPoints(x1,y1,x2,y2)+" "+midX+","+midY+")'>"+label+"</text>";
 					html+= "";
 				return html;
 			};
@@ -84,7 +88,7 @@
 			function drawNode(x1, y1, node) {
 				var html = "";
 				html += "<ellipse cx="+x1+" cy="+y1+" rx='10' ry='10' style='fill:white;stroke:black;stroke-width:2' />"
-				html += "<text x='"+(x1-25)+"' y='"+(y1+25)+"' fill='black'>";
+				html += "<text x='"+(x1+13)+"' y='"+(y1)+"' fill='black'>";
 				if(node.classValue != null) {
 					html += node.classValue+"</text>";
 				} else {
@@ -96,9 +100,9 @@
 			function drawGraph(width, height, tree) {
 				var html = "<svg style='background-color: lightgrey' width='"+width+"' height='"+height+"'>"
 				var x = width/2;
-				var y = 10;
+				var y = 15;
 				html+=drawNode(x,y,tree.root);
-				html+=drawChildren(tree.root, 400,width-400, y+50, x, y);
+				html+=drawChildren(tree.root, (x)-width*0.3,(x)+width*0.3, y+200, x, y);
 				html+="</svg>";
 				return html;
 			};
@@ -107,16 +111,31 @@
 				var html = "";
 				var x = minWidth;
 				var y = height;
+				var labelHeightMod = 0;
 				for (var i = 0; i<parent.children.length; i++){
 					var child = parent.children[i];
 					html += drawNode(x,y,child);
 					html += drawLine(px,py,x,y,child.label);
-					var newMinWidth = x-(x/2);
-					var newMaxWidth = x+(x/2);
-					//html += drawChildren(child,newMinWidth,newMaxWidth,height+50);
+					labelHeightMod+=20;
+					var newMinWidth = x-(100);
+					var newMaxWidth = x+(100);
+					html += drawChildren(child,newMinWidth,newMaxWidth,height+200,x,y);
 					x += (maxWidth-minWidth)/(parent.children.length-1);
 				}
 				return html;
+			}
+			
+			function getMidPoint(x1,y1,x2,y2) {
+				var midX = ((x1+x2)/2);
+				var midY = ((y1+y2)/2);
+				return [midX,midY];
+			}
+			
+			function getAngleBetweenPoints(x1,y1,x2,y2){
+				var deltaX = x2-x1;
+				var deltaY = y2-y1;
+				var angleDeg = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+				return angleDeg;
 			}
 			var rootCode = "<pre class='arrows-and-boxes'>";
 			rootCode += buildTree2(tree.root);

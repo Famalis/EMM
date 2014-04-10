@@ -13,7 +13,7 @@
     </head>
 
     <body ng-controller="IndexCtrl" bgcolor="grey">
-        <div style="position: absolute; left: 0px; height: 200px; width: 400px; background-color: lightblue">
+        <div style="position: absolute; left: 0px; height: 200px; width: 390px; background-color: lightblue">
             <table>
                 <tr>
                     <td>

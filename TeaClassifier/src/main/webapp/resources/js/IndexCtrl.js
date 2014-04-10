@@ -6,7 +6,12 @@ function IndexCtrl($scope, $http) {
             $scope.errorMsg = "Pole cukier musi zawierać liczbę.";
             $scope.resultString = "";
             return;
-        } else {
+        } else if ($scope.sugar<0) {
+            $scope.errorMsg = "Ilość cukru nie może być ujemna.";
+            $scope.resultString = "";
+            return;
+        } 
+        else {
             $scope.errorMsg = "";
         }
         var s = $scope.sugar?$scope.sugar : 0;

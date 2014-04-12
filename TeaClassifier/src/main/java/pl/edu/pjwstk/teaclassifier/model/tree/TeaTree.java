@@ -53,6 +53,7 @@ public class TeaTree implements Serializable {
         root.label = "root";
         root.setAttribute(bestAttr);
         root.setAttributeNum(bestAttr);
+        root.setIdString("root");
         String[] valueCombo = new String[2];
         List<Integer> used = new ArrayList<>();
         buildTree(tc, root, valueCombo, 0, used, -1);
@@ -89,6 +90,7 @@ public class TeaTree implements Serializable {
                     TeaNode child = new TeaNode();
                     child.level = level + 1;
                     child.setLabel(val);
+                    child.setIdString(parent.getIdString() + child.getLabel());
                     if (percentGood == 1.0) {
                         child.classValue = "Good (" + positive + ")";
                     } else if (percentGood == 0.0) {
@@ -138,6 +140,8 @@ public class TeaTree implements Serializable {
 
                     TeaNode child = new TeaNode();
                     child.level = level + 1;
+                    child.setLabel(val);
+                    child.setIdString(parent.getIdString() + child.getLabel());
                     double percentGood = (double) positive / (double) list.size();
                     if (percentGood == 1.0) {
                         child.classValue = "Good (" + positive + ")";
@@ -158,7 +162,6 @@ public class TeaTree implements Serializable {
                         child.setAttribute(bestAttr);
                         buildTree(tc, child, newValueCombo, level + 1, newUsed, sugar);
                     }
-                    child.setLabel(val);
                     parent.addChild(child);
                 }
             }
@@ -185,6 +188,8 @@ public class TeaTree implements Serializable {
                 } else {
                     TeaNode child = new TeaNode();
                     child.level = level + 1;
+                    child.setLabel(label);
+                    child.setIdString(parent.getIdString() + child.getLabel());
                     double percentGood = (double) positive / (double) list.size();
                     if (percentGood == 1.0) {
                         child.classValue = "Good (" + positive + ")";
@@ -205,8 +210,6 @@ public class TeaTree implements Serializable {
                         child.setAttribute(bestAttr);
                         buildTree(tc, child, valueCombo, level + 1, newUsed, newSugar);
                     }
-
-                    child.setLabel(label);
                     parent.addChild(child);
                 }
             }
@@ -217,18 +220,18 @@ public class TeaTree implements Serializable {
     private void addLeaf(ArrayList<Tea> list, int positive, TeaNode parent, String val) {
         int a = 0;
         int negative = list.size() - positive;
+        TeaNode leaf = new TeaNode();
         if (positive > negative) {
-            TeaNode leaf = new TeaNode();
             leaf.level = parent.level + 1;
             leaf.setLabel(val);
             leaf.classValue = "Good (" + positive + ")";
+            leaf.setIdString(parent.getIdString() + leaf.getLabel());
             parent.addChild(leaf);
-        }
-        else {
-            TeaNode leaf = new TeaNode();
+        } else {
             leaf.level = parent.level + 1;
             leaf.setLabel(val);
             leaf.classValue = "Bad (" + (list.size() - positive) + ")";
+            leaf.setIdString(parent.getIdString() + leaf.getLabel());
             parent.addChild(leaf);
         }
 

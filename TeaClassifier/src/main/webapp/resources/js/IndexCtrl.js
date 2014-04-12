@@ -1,6 +1,10 @@
 function IndexCtrl($scope, $http) {
 	$scope.aVar = "some var";
     
+    $scope.getSelectionCombo = function(){
+        return $scope.teaType + "," + $scope.addition + "," + $scope.sugar;
+    }
+    
     $scope.query = function() {
         if(isNaN($scope.sugar)){
             $scope.errorMsg = "Pole cukier musi zawierać liczbę.";

@@ -10,11 +10,20 @@ public class TeaNode implements Serializable {
 	public ArrayList<TeaNode> children;
 	public TeaNode parent;
 	public String label;
+    public String idString;
 	public String attribute;
 	public int attributeNum;
 	public String classValue;
 	public int level;
 
+    public String getIdString() {
+        return idString;
+    }
+
+    public void setIdString(String idString) {
+        this.idString = idString;
+    }
+    
 	public String getClassValue() {
 		return classValue;
 	}
@@ -38,6 +47,8 @@ public class TeaNode implements Serializable {
 	public void addChild(TeaNode node) {
 		children.add(node);
 		node.setParent(this);
+        //node.setIdString(this.idString+node.getLabel());
+        //System.out.println(this.idString+node.getLabel());
 	}
 
 	public void setChildren(ArrayList<TeaNode> children) {
@@ -51,6 +62,7 @@ public class TeaNode implements Serializable {
 
 	public void setParent(TeaNode parent) {
 		this.parent = parent;
+        //this.idString = parent.getIdString()+this.label;
 	}
 
 	public String getLabel() {

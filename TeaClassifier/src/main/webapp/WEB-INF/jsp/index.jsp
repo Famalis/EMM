@@ -45,20 +45,19 @@
                     <td>
                         <form name="queryForm"/>
                         Rodzaj herbaty:
-                        <select id="teaSelect" ng-change="query()" ng-model="teaType" ng-init="teaType = 'black tea'">
+                        <select onchange='showPath()' id="teaSelect" ng-change="query()" ng-model="teaType" ng-init="teaType = 'black tea'">
                             <option value="black tea">Czarna</option>
                             <option value="white tea">Biała</option>
                             <option value="green tea">Zielona</option>
                         </select>
                         Dodatek:
-                        <select id="additionSelect" ng-change="query()" ng-model="addition" ng-init="addition = 'none'">
+                        <select onchange='showPath()' id="additionSelect" ng-change="query()" ng-model="addition" ng-init="addition = 'none'">
                             <option value="none">Brak</option>
                             <option value="lemon">Cytryna</option>
                             <option value="milk">Mleko</option>
                         </select>
-                        <input id="sugarInput" ng-change="query()" type="number" ng-model="sugar" placeholder="Ile cukru..." value="0"/>                        
+                        <input onchange='showPath()' id="sugarInput" ng-change="query()" type="number" ng-model="sugar" placeholder="Ile cukru..." value="0"/>                        
                         {{resultString}}{{errorMsg}}
-                        <input type='button' onclick='showPath()' value="Pokaż ścieżkę"/>
                         </form>
                     </td>
                 </tr>

@@ -29,6 +29,14 @@
                 });
             });
         </script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#przycisk').click(function() {
+                    $('#ustawienia').toggle("slow");
+                });
+            });
+        </script>
+
         <style>
             .normalNode
             {
@@ -36,7 +44,7 @@
                 stroke:white;
                 stroke-width:2;
                 z-index: 1000;
-              
+
             }
             .selectedNode {
                 fill:yellow;
@@ -45,20 +53,20 @@
             }
             .normalLine
             {
-                
+
                 stroke:black;
                 stroke-width:2;
                 z-index:1;
-                
+
             }
             .selectedLine
             {
                 stroke:rgb(0,255,0);
                 stroke-width:2;
                 z-index: 2;
-                
+
             }
-           
+
         </style>
     </head>
 
@@ -67,13 +75,26 @@
         <div id="fullpage">
             <div class="section active" id="section0"><h1>Herbatki?<br>scrolnij w dół</h1></div>
             <div class="section" id="section1">
-    
+                <div class="ikonka" id="przycisk"></div>
+                <div class="top" id="ustawienia">
+                    <h1>DANE TESTOWE</h1>
+                    <div class="dane-testowe">
+
+                        <ul>
+                            <c:forEach var="item" items="${trainingSet}">
+                                <li>${item}</li>
+                                </c:forEach>
+                        </ul>   
+                    </div>
+                </div>
+
+
 
 
                 <div class="drzewo-container">
-                    
-                  <div class="drzewo" id="printGraph"></div>
-                    
+
+                    <div class="drzewo" id="printGraph"></div>
+
                 </div>
             </div>
         </div>
@@ -83,7 +104,7 @@
 
 
 
-               
+
         <script type="text/javascript">
                     var tree = ${treeJson};
                     var nodesList = ${nodesList};

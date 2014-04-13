@@ -69,7 +69,6 @@
 
         </style>
     </head>
-
     <body ng-controller="IndexCtrl" bgcolor="grey">
 
         <div id="fullpage">
@@ -106,29 +105,15 @@
                         <input onchange='showPath()' id="sugarInput" ng-change="query()" type="number" ng-model="sugar" placeholder="Ile cukru..." value="0"/>                        
                         {{resultString}}{{errorMsg}}
                         </form>
-                        </div>
-                    
-                    </div>
-                 
+                        </div>      
+                    </div>              
                 </div>
-
-
-
-
                 <div class="drzewo-container">
 
                     <div class="drzewo" id="printGraph"></div>
-
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
         <script type="text/javascript">
                     var tree = ${treeJson};
                     var nodesList = ${nodesList};

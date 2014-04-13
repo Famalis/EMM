@@ -331,3 +331,13 @@ p{
     background-repeat: no-repeat;
     background-position: 18px 17px;
 }
+.pytania {
+    font-size: 14px;
+    color: #000;
+    clear: both;
+    float: left;
+    width: 560px;
+    margin: 17px 0 0 0;
+    padding: 0 0 0 40px;
+
+}

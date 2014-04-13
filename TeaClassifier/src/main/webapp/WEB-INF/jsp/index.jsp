@@ -32,7 +32,7 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 $('#przycisk').click(function() {
-                    $('#ustawienia').toggle("slow");
+                    $('#ustawienia').toggle("fast");
                 });
             });
         </script>
@@ -84,8 +84,32 @@
                             <c:forEach var="item" items="${trainingSet}">
                                 <li>${item}</li>
                                 </c:forEach>
-                        </ul>   
+                        </ul>
+                        <h1>DANE UZUPEŁNIAJĄCE</h1>
+                        <div class="pytania">
+                        <form name="queryForm"/>
+                        Rodzaj herbaty:
+                        <select onchange='showPath()' id="teaSelect" ng-change="query()" ng-model="teaType" ng-init="teaType = 'black tea'">
+                            <option value="black tea">Czarna</option>
+                            <option value="white tea">Biała</option>
+                            <option value="green tea">Zielona</option>
+                        </select>
+                        <br/>
+                        Dodatek:
+                        <select onchange='showPath()' id="additionSelect" ng-change="query()" ng-model="addition" ng-init="addition = 'none'">
+                            <option value="none">Brak</option>
+                            <option value="lemon">Cytryna</option>
+                            <option value="milk">Mleko</option>
+                        </select>
+                        <br />
+                        Ile cukru:
+                        <input onchange='showPath()' id="sugarInput" ng-change="query()" type="number" ng-model="sugar" placeholder="Ile cukru..." value="0"/>                        
+                        {{resultString}}{{errorMsg}}
+                        </form>
+                        </div>
+                    
                     </div>
+                 
                 </div>
 
 

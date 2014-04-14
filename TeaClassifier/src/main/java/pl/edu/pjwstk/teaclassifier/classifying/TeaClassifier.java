@@ -321,7 +321,7 @@ public class TeaClassifier {
      * @param sugar
      * @return 
      */
-	public ArrayList<Tea> getTeasWithValueS(String[] values, int sugar) {
+	public ArrayList<Tea> getTeasWithValueS(String[] values, double sugar) {
 
 		ArrayList<Tea> teas = new ArrayList<>();
 

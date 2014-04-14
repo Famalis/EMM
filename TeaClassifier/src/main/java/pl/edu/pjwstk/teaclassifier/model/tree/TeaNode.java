@@ -15,6 +15,10 @@ public class TeaNode implements Serializable {
 	public int attributeNum;
 	public String classValue;
 	public int level;
+	
+	public int positive;
+	public int negative;
+	public String[] valuesCombination = new String[3];
 
     public String getIdString() {
         return idString;
@@ -113,5 +117,11 @@ public class TeaNode implements Serializable {
 	@Override
 	public String toString() {
 		return this.classValue != null ? this.classValue : this.attribute;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		TeaNode tn = (TeaNode) o;
+		return tn.valuesCombination == this.valuesCombination;
 	}
 }

@@ -7,6 +7,9 @@
 package pl.edu.pjwstk.teaclassifier.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import pl.edu.pjwstk.teaclassifier.model.tree.TeaNode;
 
 /**
  *
@@ -91,6 +94,18 @@ public class Tea implements Serializable, Comparable{
 	@Override
 	public String toString() {
 		return this.teaType+", "+this.sugar+" g, "+this.addition+" => "+this.drinkable;
+	}
+	
+	public static List<Tea> convertTeaNodesToTea(List<TeaNode> nodes) {		
+		List<Tea> teas = new ArrayList<>();
+		for (TeaNode node : nodes) {
+			Tea t = new Tea();
+			t.setAddition(node.valuesCombination[2]);
+			t.setSugar(Double.parseDouble(node.valuesCombination[1]));
+			t.setTeaType(node.valuesCombination[0]);
+			teas.add(t);
+		}
+		return teas;
 	}
 	
 }

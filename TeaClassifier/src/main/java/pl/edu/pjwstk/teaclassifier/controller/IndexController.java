@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,6 +58,14 @@ public class IndexController {
 		LOG.info(Utils.convertObjectToJSON(tree.getRoot()));
 		tree.print();
 		writeDataToModel(model);
+		double[] errors = tree.prune();
+		LOG.info("Errors before pruning: "+errors[0]);		
+		if(errors[0]<=errors[1]) {
+			LOG.info("Tree was NOT pruned");
+		} else {
+			LOG.info("Tree was pruned");
+			LOG.info("Errors after pruning: "+errors[1]);
+		}
 		return "index";
 	}
 

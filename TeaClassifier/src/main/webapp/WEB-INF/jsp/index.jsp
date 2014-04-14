@@ -206,10 +206,6 @@
                                     .setAttribute("class", "selectedNode");
                         }
                         for (var i = 0; i < node.children.length; i++) {
-                            document.getElementById(node.children[i].idString)
-                                    .setAttribute("class", "normalNode");
-                            document.getElementById(node.children[i].idString + "line")
-                                    .setAttribute("class", "normalLine");
                             if (node.attributeNum == 0) {
                                 if (node.children[i].label == teaType) {
                                     document.getElementById(node.children[i].idString)

@@ -71,7 +71,9 @@
     <body ng-controller="IndexCtrl" bgcolor="grey">
 
         <div id="fullpage">
-            <div class="section active" id="section0"><h1>Herbatki?<br>scrolnij w dół</h1></div>
+            <div class="section active" id="section0">
+                <img class="obrazek" src="/TeaClassifier/resources/images/mrT.png">
+                <h1>Herbatki?<br>scroll'nij w dół</h1></div>
             <div class="section" id="section1">
                 <div class="ikonka" id="przycisk"></div>
                 <div class="top" id="ustawienia">

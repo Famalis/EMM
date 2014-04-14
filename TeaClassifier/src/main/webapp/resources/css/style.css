@@ -342,3 +342,7 @@ p{
     padding: 0 0 0 40px;
 
 }
+.obrazek {
+    max-height: 100%;
+    max-width: 100%;
+}

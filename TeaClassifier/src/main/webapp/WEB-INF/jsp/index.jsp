@@ -6,8 +6,7 @@
 <html ng-app>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome to Spring Web MVC project</title>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <title>Tea Classifier</title>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.5/angular.min.js"></script>
         <script type="text/javascript" src="/TeaClassifier/resources/js/IndexCtrl.js"></script>
         <link rel="stylesheet" type="text/css" href="/TeaClassifier/resources/css/jquery.fullPage.css" />
@@ -84,7 +83,7 @@
                                 <li>${item}</li>
                                 </c:forEach>
                         </ul>
-                        <h1>DANE UZUPEŁNIAJĄCE</h1>
+                        <h1>ZAPYTANIE</h1>
                         <div class="pytania">
                         <form name="queryForm"/>
                         Rodzaj herbaty:

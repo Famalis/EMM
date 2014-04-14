@@ -1,6 +1,4 @@
 function IndexCtrl($scope, $http) {
-	$scope.aVar = "some var";
-    
     $scope.getSelectionCombo = function(){
         return $scope.teaType + "," + $scope.addition + "," + $scope.sugar;
     }

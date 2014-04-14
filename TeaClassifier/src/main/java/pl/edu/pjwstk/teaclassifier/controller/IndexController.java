@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package pl.edu.pjwstk.teaclassifier.controller;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,29 +15,29 @@ import pl.edu.pjwstk.teaclassifier.classifying.TeaClassifier;
 import pl.edu.pjwstk.teaclassifier.model.tree.TeaTree;
 import pl.edu.pjwstk.teaclassifier.utils.Utils;
 
-/**
- *
- * @author sergio
- */
 @Controller
 @RequestMapping("/index")
 public class IndexController {
+	private static final Logger LOG = Logger.getLogger(IndexController.class.getName());
 	
 	private TeaTree tree;
+	private TeaClassifier tc;
 	
 	@RequestMapping("/index")
 	public String home(ModelMap model, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		TeaClassifier tc = new TeaClassifier();
+		if(tc == null) {
+			tc = new TeaClassifier();
+		}
 		//tc.generateTrainingSetFromTxt("teaDat.txt");
 		tc.generateTrainingSet();
-		System.out.println("Sugar "+tc.gainRatio(TeaClassifier.SUGAR)+" "+tc.sugarGain()[1]);
-		System.out.println("Addition "+tc.gainRatio(TeaClassifier.ADDITION));
-		System.out.println("Tea type "+tc.gainRatio(TeaClassifier.TEA_TYPE));
+		LOG.log(Level.INFO, "Sugar {0} {1}", new Object[]{tc.gainRatio(TeaClassifier.SUGAR), tc.sugarGain()[1]});
+		LOG.log(Level.INFO, "Addition {0}", tc.gainRatio(TeaClassifier.ADDITION));
+		LOG.log(Level.INFO, "Tea type {0}", tc.gainRatio(TeaClassifier.TEA_TYPE));
 		if(tree == null) {
 			tree = new TeaTree(tc);
-			System.out.println("new tree");
+			LOG.info("new tree");
 		}		
-		System.out.println(Utils.convertObjectToJSON(tree.getRoot()));		
+		LOG.info(Utils.convertObjectToJSON(tree.getRoot()));		
 		tree.print();
 		model.addAttribute("treeHtml", tree.htmlString());
 		model.addAttribute("treeJson", Utils.convertObjectToJSON(tree));
@@ -51,8 +47,6 @@ public class IndexController {
 		model.addAttribute("nodesList", Utils.convertObjectListToJSON(TeaTree.nodes(tree.getRoot())));
 		model.addAttribute("trainingSet", tc.getTrainingSet());
         model.addAttribute("sugarThreshold", tc.sugarGain()[1]);
-        String[] values = {"green tea","lemon"};
-		System.out.println(tc.getTeasWithValueS(values, -1));
 		return "index";
 	}
     

@@ -1,25 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.edu.pjwstk.teaclassifier.classifying;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import pl.edu.pjwstk.teaclassifier.model.Tea;
 
-/**
- *
- * @author sergio
- */
 public class TeaClassifier {
 
 	private ArrayList<Tea> trainingSet = new ArrayList<>();
@@ -62,15 +50,8 @@ public class TeaClassifier {
 	public void generateTrainingSet() {
 		if (trainingSet.isEmpty()) {
 			trainingSet = constantSetGenerate();
-			for (Tea t : trainingSet) {
-				System.out.println(t.toString());
-			}
 		}
 
-	}
-
-	private ArrayList<Tea> randomSetGenerate() {
-		return null;
 	}
 
 	private ArrayList<Tea> constantSetGenerate() {
@@ -86,12 +67,12 @@ public class TeaClassifier {
 		list.add(new Tea(Tea.GREEN_TEA, 43.0, Tea.LEMON, true));
         list.add(new Tea(Tea.GREEN_TEA, 0.0, Tea.LEMON, true));
         list.add(new Tea(Tea.GREEN_TEA, 143.0, Tea.LEMON, false));
+		list.add(new Tea(Tea.GREEN_TEA, 0.0, Tea.LEMON, true));
+		list.add(new Tea(Tea.GREEN_TEA, 139.0, Tea.LEMON, false));
 		list.add(new Tea(Tea.WHITE_TEA, 0.0, Tea.NONE, false));
 		list.add(new Tea(Tea.WHITE_TEA, 19.0, Tea.MILK, true));
-		list.add(new Tea(Tea.WHITE_TEA, 37.0, Tea.LEMON, false));
-		list.add(new Tea(Tea.GREEN_TEA, 0.0, Tea.LEMON, true));
-		list.add(new Tea(Tea.WHITE_TEA, 150.0, Tea.MILK, true));
-		list.add(new Tea(Tea.GREEN_TEA, 139.0, Tea.LEMON, false));
+		list.add(new Tea(Tea.WHITE_TEA, 37.0, Tea.LEMON, false));		
+		list.add(new Tea(Tea.WHITE_TEA, 150.0, Tea.MILK, true));		
 		list.add(new Tea(Tea.WHITE_TEA, 0.0, Tea.LEMON, false));
 		list.add(new Tea(Tea.WHITE_TEA, 0.0, Tea.MILK, true));
 		return list;
@@ -111,12 +92,6 @@ public class TeaClassifier {
 			return 0.0;
 		}
 		return result;
-	}
-
-	public void classify() {
-		for (Tea t : trainingSet) {
-
-		}
 	}
 
 	public double info() {
@@ -236,38 +211,17 @@ public class TeaClassifier {
 	public double teaTypeSplitInfo() {
 		double result = 0.0;
 		double blackTeaSize = 0.0;
-		double blackGood = 0.0;
-		double blackBad = 0.0;
 		double whiteTeaSize = 0.0;
-		double whitekGood = 0.0;
-		double whiteBad = 0.0;
 		double greenTeaSize = 0.0;
-		double greenGood = 0.0;
-		double greenBad = 0.0;
 		for (Tea t : trainingSet) {
 			if (t.getTeaType().equals(Tea.BLACK_TEA)) {
 				blackTeaSize++;
-				if (t.isDrinkable()) {
-					blackGood++;
-				} else {
-					blackBad++;
-				}
 			}
 			if (t.getTeaType().equals(Tea.GREEN_TEA)) {
 				whiteTeaSize++;
-				if (t.isDrinkable()) {
-					whitekGood++;
-				} else {
-					whiteBad++;
-				}
 			}
 			if (t.getTeaType().equals(Tea.WHITE_TEA)) {
 				greenTeaSize++;
-				if (t.isDrinkable()) {
-					greenGood++;
-				} else {
-					greenBad++;
-				}
 			}
 		}
 		result = (-1.0*blackTeaSize / (double)trainingSet.size()) * log2(blackTeaSize/(double)trainingSet.size());
@@ -276,42 +230,20 @@ public class TeaClassifier {
 		return result;
 	}
 	
-	public double additionalSplitInfo() {
-		
+	public double additionalSplitInfo() {		
 		double result = 0.0;
 		double milkSize = 0.0;
-		double milkGood = 0.0;
-		double milkBad = 0.0;
 		double lemonSize = 0.0;
-		double lemonGood = 0.0;
-		double lemonBad = 0.0;
 		double noneSize = 0.0;
-		double noneGood = 0.0;
-		double noneBad = 0.0;
 		for (Tea t : trainingSet) {
 			if (t.getAddition().equals(Tea.MILK)) {
 				milkSize++;
-				if (t.isDrinkable()) {
-					lemonGood++;
-				} else {
-					lemonBad++;
-				}
 			}
 			if (t.getAddition().equals(Tea.LEMON)) {
 				lemonSize++;
-				if (t.isDrinkable()) {
-					milkGood++;
-				} else {
-					milkBad++;
-				}
 			}
 			if (t.getAddition().equals(Tea.NONE)) {
 				noneSize++;
-				if (t.isDrinkable()) {
-					noneGood++;
-				} else {
-					noneBad++;
-				}
 			}
 		}
 		result = (-1.0 * milkSize / (double)trainingSet.size()) * log2(milkSize/(double)trainingSet.size());

@@ -352,8 +352,16 @@ p{
     margin: 17px 0 0 0;
     padding: 0 0 0 40px;
 
+   
+
 }
 .obrazek {
     max-height: 100%;
     max-width: 100%;
+}
+.plus-minus {
+    margin: 2px 16px 0 0;
+    cursor:pointer;
+    margin-top:2px;
+    float: left;
 }

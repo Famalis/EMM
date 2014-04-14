@@ -187,8 +187,19 @@
                         var teaType = document.getElementById('teaSelect').value;
                         var addition = document.getElementById('additionSelect').value;
                         var sugar = document.getElementById('sugarInput').value;
+						resetPath(tree.root);
                         paintPath(tree.root, teaType, addition, sugar);
                     }
+					
+					function resetPath(node){
+						for (var i = 0; i < node.children.length; i++) {
+                            document.getElementById(node.children[i].idString)
+                                    .setAttribute("class", "normalNode");
+							document.getElementById(node.children[i].idString + "line")
+                                    .setAttribute("class", "normalLine");
+							resetPath(node.children[i]);
+						}
+					}
 
                     function paintPath(node, teaType, addition, sugar) {
                         if (node.label == 'root') {

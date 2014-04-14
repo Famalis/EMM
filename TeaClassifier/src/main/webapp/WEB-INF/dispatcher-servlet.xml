@@ -13,6 +13,7 @@
 			<props>
 				<prop key="index.htm">indexController</prop>
 				<prop key="query.htm">indexController</prop>
+				<prop key="upload.htm">indexController</prop>
 			</props>
 		</property>
 	</bean>

@@ -342,6 +342,17 @@ p{
     padding: 0 0 0 40px;
 
 }
+
+.upload {
+    font-size: 14px;
+    color: #000;
+    clear: both;
+    float: left;
+    width: 560px;
+    margin: 17px 0 0 0;
+    padding: 0 0 0 40px;
+
+}
 .obrazek {
     max-height: 100%;
     max-width: 100%;

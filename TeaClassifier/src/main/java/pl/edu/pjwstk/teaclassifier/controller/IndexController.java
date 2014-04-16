@@ -40,6 +40,7 @@ public class IndexController {
 		model.addAttribute("nodesList", Utils.convertObjectListToJSON(TeaTree.nodes(tree.getRoot())));
 		model.addAttribute("trainingSet", tc.getTrainingSet());
 		model.addAttribute("sugarThreshold", tc.sugarGain()[1]);
+		model.addAttribute("errorRates", tree.prune());
 	}
 
 	@RequestMapping("/index")
@@ -59,13 +60,8 @@ public class IndexController {
 		tree.print();
 		writeDataToModel(model);
 		double[] errors = tree.prune();
-		LOG.info("Errors before pruning: "+errors[0]);		
-		if(errors[0]<=errors[1]) {
-			LOG.info("Tree was NOT pruned");
-		} else {
-			LOG.info("Tree was pruned");
-			LOG.info("Errors after pruning: "+errors[1]);
-		}
+		LOG.info("Errors before pruning: "+errors[0]);
+		LOG.info("Errors after pruning:  "+errors[1]);
 		return "index";
 	}
 

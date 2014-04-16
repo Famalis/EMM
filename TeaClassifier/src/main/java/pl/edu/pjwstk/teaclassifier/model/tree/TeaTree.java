@@ -3,6 +3,8 @@ package pl.edu.pjwstk.teaclassifier.model.tree;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 import org.apache.commons.lang3.ArrayUtils;
@@ -330,10 +332,14 @@ public class TeaTree implements Serializable {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Przycina drzewo, zwraca tablicę ze współczynnikami błędu drzewa przed i po.
+	 * @return 
+	 */
 	public double[] prune() {
-		int[] errorsBeforeAndAfter = new int[2];
 		double[] errorRates = new double[2];
+		errorRates[0] = calcErrorRate();
 		List<TeaNode> nodes = TeaTree.nodes(this.root);
 		List<TeaNode> leafs = new ArrayList<>();
 		List<TeaNode> subtrees = new ArrayList<>();
@@ -344,16 +350,24 @@ public class TeaTree implements Serializable {
 				subtrees.add(node);
 			}
 		}
+		Collections.sort(subtrees, new Comparator<TeaNode>(){
+
+			@Override
+			public int compare(TeaNode o1, TeaNode o2) {
+				return o1.children.size() - o2.children.size();
+			}
+			
+		});
 		for (TeaNode node : subtrees) {
 			String[] strValues = new String[2];
 			strValues[0] = node.valuesCombination[0];
 			strValues[1] = node.valuesCombination[2];
-			Double sugar = node.valuesCombination[1] == null ? 0
+			Double sugar = node.valuesCombination[1] == null ? -1.0
 					: Double.parseDouble(node.valuesCombination[1]);
-			int errors = 0;
-			int leafErrors = 0;
 			ArrayList<Tea> list = teaClassifier.getTeasWithValueS(strValues, sugar);
 			int positive = 0;
+			int errors = 0;
+			int leafErrors = 0;
 			boolean mostPopularClassValue = positive > list.size() - positive
 					? true : false;
 			for (Tea tea : list) {
@@ -367,17 +381,19 @@ public class TeaTree implements Serializable {
 				if (intResult == 1) {
 					if (!tea.isDrinkable()) {
 						errors++;
+						//LOG.info("ERROR: "+Arrays.toString(node.valuesCombination)+" = "+tea.toString());
 					}
 				} else if (intResult == 0) {
 					if (tea.isDrinkable()) {
 						errors++;
+						//LOG.info("ERROR: "+Arrays.toString(node.valuesCombination)+" = "+tea.toString());
 					}
 				} else {
 					errors++;
+					//LOG.info("ERROR Not known: "+Arrays.toString(node.valuesCombination)+" = "+tea.toString());
 				}
 			}
-			errorsBeforeAndAfter[0] += errors;
-			errorsBeforeAndAfter[1] += leafErrors;
+			
 			if (errors > 0 && leafErrors < errors) {
 				LOG.info("Pruning subtree: "+Arrays.toString(node.valuesCombination));
 				String classValue = positive>list.size()-positive ?
@@ -387,11 +403,30 @@ public class TeaTree implements Serializable {
 			}
 			//System.out.println("Error for " + Arrays.toString(node.valuesCombination) + " " + (errors / list.size()));
 		}
-		errorRates[0] = (double)errorsBeforeAndAfter[0]/(double)nodes.size();
-		errorRates[1] = (double)errorsBeforeAndAfter[1]/(double)nodes.size();
+		
+		errorRates[1] = calcErrorRate();
 		//System.out.println(Arrays.toString(errorsBeforeAndAfter));
 		return errorRates;
 
+	}
+	
+	private double calcErrorRate() {
+		int error = 0;
+		for (Tea tea : teaClassifier.getTrainingSet()) {
+			int intResult = queryTea(tea.getTeaType(), tea.getAddition(), tea.getSugar());
+			boolean result = false;
+			if(intResult == 1 
+					&& tea.isDrinkable()) {
+				result = true;
+			} else if (intResult == 0
+					&& !tea.isDrinkable()) {
+				result = true;
+			} else {
+				error++;
+			}
+		}
+		
+		return (double)error/(double)teaClassifier.getTrainingSet().size();
 	}
 
 }

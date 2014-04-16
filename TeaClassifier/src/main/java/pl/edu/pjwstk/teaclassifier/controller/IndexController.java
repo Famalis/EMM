@@ -57,11 +57,11 @@ public class IndexController {
 			LOG.info("new tree");
 		}
 		LOG.info(Utils.convertObjectToJSON(tree.getRoot()));
-		tree.print();
-		writeDataToModel(model);
+		tree.print();		
 		double[] errors = tree.prune();
 		LOG.info("Errors before pruning: "+errors[0]);
 		LOG.info("Errors after pruning:  "+errors[1]);
+		writeDataToModel(model);
 		return "index";
 	}
 

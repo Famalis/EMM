@@ -100,9 +100,9 @@ public class TeaTree implements Serializable {
 				child.setIdString(parent.getIdString() + child.getLabel());
 				double percentGood = (double) positive / (double) list.size();
 				if (percentGood == 1.0) {
-					child.classValue = "Good (" + positive + ")";
+					addLeaf(list, positive, parent, label, valueCombo, newSugar);
 				} else if (percentGood == 0.0) {
-					child.classValue = "Bad (" + (list.size() - positive) + ")";
+					addLeaf(list, positive, parent, label, valueCombo, newSugar);
 				} else {
 					double bestGain = 0.0;
 					int bestAttr = 0;
@@ -117,10 +117,11 @@ public class TeaTree implements Serializable {
 					}
 					child.setAttribute(bestAttr);
 					buildTree(tc, child, valueCombo, level + 1, newUsed, newSugar);
+					parent.addChild(child);
 				}
-				parent.addChild(child);
+				
 			}
-		}
+		}		
 
 	}
 
@@ -156,9 +157,9 @@ public class TeaTree implements Serializable {
 			child.valuesCombination[2] = newValueCombo[1];
 			child.valuesCombination[1] = sugar + "";
 			if (percentGood == 1.0) {
-				child.classValue = "Good (" + positive + ")";
+				addLeaf(list, positive, parent, val, newValueCombo, sugar);
 			} else if (percentGood == 0.0) {
-				child.classValue = "Bad (" + (list.size() - positive) + ")";
+				addLeaf(list, positive, parent, val, newValueCombo, sugar);
 			} else {
 				double bestGain = 0.0;
 				int bestAttr = 0;
@@ -173,8 +174,9 @@ public class TeaTree implements Serializable {
 				}
 				child.setAttribute(bestAttr);
 				buildTree(tc, child, newValueCombo, level + 1, newUsed, sugar);
+				parent.addChild(child);
 			}
-			parent.addChild(child);
+			
 		}
 	}
 
@@ -219,6 +221,7 @@ public class TeaTree implements Serializable {
 		} else {
 			line += " -> " + parent.classValue;
 		}
+		LOG.info(line);
 		for (TeaNode node : parent.children) {
 			printString(node);
 		}
@@ -333,11 +336,27 @@ public class TeaTree implements Serializable {
 		return null;
 	}
 	
+	private void simplePrune(TeaNode parent){
+		if(parent.children.size()==1) {
+			TeaNode parentParent = parent.getParent();	
+			TeaNode child = parent.getChildren().get(0);
+			String label = parent.getLabel();
+			child.setLabel(label);
+			parentParent.addChild(child);
+			parentParent.getChildren().remove(parent);
+			int a = 0;
+		}
+		for (TeaNode child : parent.getChildren()) {
+			simplePrune(child);
+		}
+	}
+	
 	/**
 	 * Przycina drzewo, zwraca tablicę ze współczynnikami błędu drzewa przed i po.
 	 * @return 
 	 */
 	public double[] prune() {
+		simplePrune(root);
 		double[] errorRates = new double[2];
 		errorRates[0] = calcErrorRate();
 		List<TeaNode> nodes = TeaTree.nodes(this.root);

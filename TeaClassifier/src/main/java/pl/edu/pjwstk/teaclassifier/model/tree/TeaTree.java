@@ -356,7 +356,7 @@ public class TeaTree implements Serializable {
 	 * @return 
 	 */
 	public double[] prune() {
-		simplePrune(root);
+		//simplePrune(root);
 		double[] errorRates = new double[2];
 		errorRates[0] = calcErrorRate();
 		List<TeaNode> nodes = TeaTree.nodes(this.root);

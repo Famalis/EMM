@@ -336,7 +336,7 @@ public class TeaTree implements Serializable {
 		return null;
 	}
 	
-	private void simplePrune(TeaNode parent){
+	private void removeNodesWithOneBranch(TeaNode parent){
 		if(parent.children.size()==1) {
 			TeaNode parentParent = parent.getParent();	
 			TeaNode child = parent.getChildren().get(0);
@@ -347,7 +347,7 @@ public class TeaTree implements Serializable {
 			int a = 0;
 		}
 		for (TeaNode child : parent.getChildren()) {
-			simplePrune(child);
+			removeNodesWithOneBranch(child);
 		}
 	}
 	
@@ -355,10 +355,10 @@ public class TeaTree implements Serializable {
 	 * Przycina drzewo, zwraca tablicę ze współczynnikami błędu drzewa przed i po.
 	 * @return 
 	 */
-	public double[] prune() {
-		simplePrune(root);
+	public double[] prune() {		
 		double[] errorRates = new double[2];
 		errorRates[0] = calcErrorRate();
+		removeNodesWithOneBranch(root);
 		List<TeaNode> nodes = TeaTree.nodes(this.root);
 		List<TeaNode> leafs = new ArrayList<>();
 		List<TeaNode> subtrees = new ArrayList<>();
